@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-24">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduardo Torres | Software Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151f32',
+                            900: '#0f172a',
+                        },
+                        brand: {
+                            400: '#38bdf8', // Light blue
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism for floating nav */
+        .glass-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #38bdf8, #818cf8);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-900 text-slate-300 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-20 opacity-0 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3">
+        <span id="toast-icon-container"><i data-lucide="check-circle" class="text-green-400 w-5 h-5"></i></span>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-white tracking-tight">ET<span class="text-brand-500">.</span></a>
+            <div class="hidden md:flex gap-6 text-sm font-medium">
+                <a href="#summary" class="hover:text-brand-400 transition-colors">Summary</a>
+                <a href="#skills" class="hover:text-brand-400 transition-colors">Skills</a>
+                <a href="#experience" class="hover:text-brand-400 transition-colors">Experience</a>
+                <a href="#education" class="hover:text-brand-400 transition-colors">Education</a>
+            </div>
+            <a href="mailto:torreseduardo804@gmail.com"
+                class="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-brand-500/30">
+                Hire Me
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex items-center pt-20 relative overflow-hidden">
+        <!-- Background glow -->
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[100px] -z-10"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-[100px] -z-10"></div>
+
+        <div class="max-w-5xl mx-auto px-6 w-full reveal">
+            <p class="text-brand-400 font-mono mb-4 text-sm md:text-base">Hi, my name is</p>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-2 tracking-tight">Eduardo Torres.</h1>
+            <h2 class="text-4xl md:text-6xl font-bold text-slate-400 mb-6 tracking-tight text-gradient">I build robust
+                software solutions.</h2>
+
+            <p class="max-w-2xl text-lg md:text-xl text-slate-400 leading-relaxed mb-10">
+                Fully bilingual Computer Science student and Software Developer based in San Lorenzo, PR.
+                I specialize in backend development, systems troubleshooting, and data analysis to improve operational
+                efficiency.
+            </p>
+
+            <div class="flex flex-wrap gap-4 items-center">
+                <button onclick="copyContact('torreseduardo804@gmail.com', 'Email')"
+                    class="group flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-5 py-3 rounded-xl transition-all">
+                    <i data-lucide="mail"
+                        class="w-5 h-5 text-slate-400 group-hover:text-brand-400 transition-colors"></i>
+                    <span class="font-medium text-white">Email Me</span>
+                </button>
+                <button onclick="copyContact('+19392670235', 'Phone number')"
+                    class="group flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-5 py-3 rounded-xl transition-all">
+                    <i data-lucide="phone"
+                        class="w-5 h-5 text-slate-400 group-hover:text-brand-400 transition-colors"></i>
+                    <span class="font-medium text-white">Copy Phone</span>
+                </button>
+                <a href="https://www.linkedin.com/in/eduardo-torres-787087221" target="_blank"
+                    class="group flex items-center gap-2 bg-slate-800 hover:bg-[#0A66C2] border border-slate-700 px-5 py-3 rounded-xl transition-all">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white transition-colors fill-current"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                    </svg>
+                    <span class="font-medium text-white">LinkedIn</span>
+                </a>
+                <a href="https://github.com/EduardoTorresAlamo" target="_blank"
+                    class="group flex items-center gap-2 bg-slate-800 hover:bg-[#333] border border-slate-700 px-5 py-3 rounded-xl transition-all">
+                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white transition-colors fill-current"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                    </svg>
+                    <span class="font-medium text-white">GitHub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Summary Section -->
+    <section id="summary" class="py-24 bg-slate-850/50">
+        <div class="max-w-4xl mx-auto px-6 reveal">
+            <div class="flex items-center gap-4 mb-8">
+                <h2 class="text-3xl font-bold text-white">Summary</h2>
+                <div class="h-px bg-slate-700 flex-1"></div>
+            </div>
+            <div class="bg-slate-800/50 border border-slate-700/50 p-8 rounded-2xl backdrop-blur-sm shadow-xl">
+                <p class="text-lg leading-relaxed text-slate-300">
+                    Fully bilingual Computer Science student and Software Developer with a background in IT operations
+                    and technical support. Experienced in backend development, systems troubleshooting, and data
+                    analysis across Windows, iOS, and Linux environments. Proven track record of improving operational
+                    efficiency through technical solutions and clear communication. Seeking to leverage strong
+                    programming fundamentals in C++, Java, and Node.js to contribute to a remote-first engineering team.
+                </p>
+                <div class="mt-6 flex gap-4">
+                    <span
+                        class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-brand-400"></i> San Lorenzo, PR
+                    </span>
+                    <span
+                        class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                        <i data-lucide="globe" class="w-4 h-4 text-brand-400"></i> Open to Remote
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24">
+        <div class="max-w-5xl mx-auto px-6 reveal">
+            <div class="flex items-center gap-4 mb-12">
+                <h2 class="text-3xl font-bold text-white">Skills</h2>
+                <div class="h-px bg-slate-700 flex-1"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Skill Category -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="code-2" class="w-5 h-5 text-brand-400"></i> Languages
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">C++</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Java</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">C#</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Python</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">JavaScript</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Go</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">PHP</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Swift</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">F#</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">SQL</span>
+                    </div>
+                </div>
+
+                <!-- Skill Category -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-brand-400"></i> Frameworks & Web
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Node.js</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">.NET
+                            Core</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Vue.js</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">HTML5</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">CSS3</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">JSON</span>
+                    </div>
+                </div>
+
+                <!-- Skill Category -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="terminal" class="w-5 h-5 text-brand-400"></i> Tools & VCS
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Git</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">GitHub</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Visual
+                            Studio</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Eclipse</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">MySQL</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">SQLite</span>
+                    </div>
+                </div>
+
+                <!-- Skill Category -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
+                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="server" class="w-5 h-5 text-brand-400"></i> Infrastructure & Core CS
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Linux/Windows/iOS/Android</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">DHCP/DNS</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Active
+                            Directory</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Data
+                            Structures & Algorithms</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">OOP
+                            & System Design</span>
+                        <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Unit
+                            Testing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-24 bg-slate-850/50 relative">
+        <div class="max-w-4xl mx-auto px-6 reveal">
+            <div class="flex items-center gap-4 mb-12">
+                <h2 class="text-3xl font-bold text-white">Experience</h2>
+                <div class="h-px bg-slate-700 flex-1"></div>
+            </div>
+
+            <div
+                class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
+
+                <!-- Job 1 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <!-- Icon -->
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-800 group-hover:border-brand-400 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors duration-300">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i>
+                    </div>
+                    <!-- Card -->
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-slate-800/50 p-6 rounded-2xl border border-slate-700 hover:border-brand-500/50 transition-colors shadow-lg">
+                        <div class="flex flex-col mb-4">
+                            <span class="text-brand-400 font-mono text-sm mb-1">May 2023 — Present</span>
+                            <h3 class="text-xl font-bold text-white">Digital Payments Support Specialist</h3>
+                            <span class="text-slate-400 font-medium">Accepta Payments • San Juan, PR</span>
+                        </div>
+                        <ul
+                            class="text-slate-300 space-y-2 text-sm leading-relaxed list-disc list-inside marker:text-brand-500">
+                            <li>Provide high-level technical support for a complex payment platform, focusing on backend
+                                stability and uptime.</li>
+                            <li>Perform regular data analysis using SQL to identify performance bottlenecks and areas
+                                for platform improvement.</li>
+                            <li>Serve as a key stakeholder in Change Management processes, ensuring software updates are
+                                deployed with minimal user impact.</li>
+                            <li>Monitor infrastructure health and collaborate with developers to debug and resolve
+                                production issues.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Job 2 -->
+                <div
+                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <!-- Icon -->
+                    <div
+                        class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-800 group-hover:border-brand-400 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors duration-300">
+                        <i data-lucide="server-cog" class="w-4 h-4"></i>
+                    </div>
+                    <!-- Card -->
+                    <div
+                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-slate-800/50 p-6 rounded-2xl border border-slate-700 hover:border-brand-500/50 transition-colors shadow-lg">
+                        <div class="flex flex-col mb-4">
+                            <span class="text-brand-400 font-mono text-sm mb-1">Oct 2021 — May 2023</span>
+                            <h3 class="text-xl font-bold text-white">IT Assistant</h3>
+                            <span class="text-slate-400 font-medium">All Ways 99 • Caguas, PR</span>
+                        </div>
+                        <ul
+                            class="text-slate-300 space-y-2 text-sm leading-relaxed list-disc list-inside marker:text-brand-500">
+                            <li>Configured and programmed hardware and software for POS systems and network access
+                                points across 98 retail locations.</li>
+                            <li>Automated repetitive setup tasks, significantly reducing the onboarding time for new
+                                hardware.</li>
+                            <li>Provided remote and on-site technical assistance for a diverse workforce, maintaining
+                                high efficiency in warehouse and office operations.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Languages -->
+    <section id="education" class="py-24">
+        <div class="max-w-5xl mx-auto px-6 reveal">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+                <!-- Education -->
+                <div>
+                    <div class="flex items-center gap-4 mb-8">
+                        <h2 class="text-3xl font-bold text-white">Education</h2>
+                        <div class="h-px bg-slate-700 flex-1"></div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div
+                            class="bg-slate-800/40 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-brand-500">
+                            <h3 class="text-lg font-bold text-white">B.S. in Computer Science</h3>
+                            <p class="text-brand-400 font-medium">Universidad de Puerto Rico • Bayamón, PR</p>
+                            <p class="text-slate-500 text-sm mt-2">2016 — May 2026 (Expected)</p>
+                        </div>
+
+                        <div
+                            class="bg-slate-800/40 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-slate-600">
+                            <h3 class="text-lg font-bold text-white">High School Diploma</h3>
+                            <p class="text-slate-300 font-medium">Esc. Voc. Antonio Fernos Isern • San Lorenzo, PR</p>
+                            <p class="text-slate-500 text-sm mt-2">2013 — 2015</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div>
+                    <div class="flex items-center gap-4 mb-8">
+                        <h2 class="text-3xl font-bold text-white">Languages</h2>
+                        <div class="h-px bg-slate-700 flex-1"></div>
+                    </div>
+
+                    <div
+                        class="bg-slate-800/40 p-8 rounded-2xl border border-slate-700 h-full flex flex-col justify-center gap-8">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-white font-medium text-lg">Spanish</span>
+                                <span class="text-brand-400 text-sm font-mono">Native / Expert</span>
+                            </div>
+                            <div class="w-full bg-slate-900 rounded-full h-2.5">
+                                <div class="bg-gradient-to-r from-brand-600 to-brand-400 h-2.5 rounded-full"
+                                    style="width: 100%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-white font-medium text-lg">English</span>
+                                <span class="text-brand-400 text-sm font-mono">Fluent</span>
+                            </div>
+                            <div class="w-full bg-slate-900 rounded-full h-2.5">
+                                <div class="bg-gradient-to-r from-brand-600 to-brand-400 h-2.5 rounded-full"
+                                    style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 py-8 border-t border-slate-800 text-center">
+        <div class="max-w-5xl mx-auto px-6">
+            <p class="text-slate-500 text-sm">
+                Built and designed for Eduardo Torres. <br class="md:hidden"> Powered by modern web technologies.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Copy to clipboard functionality
+        function copyContact(text, type) {
+            const fallbackCopy = () => {
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(`${type} copied to clipboard!`);
+                } catch (err) {
+                    showToast('Failed to copy. Please try manually.', false);
+                }
+                document.body.removeChild(textArea);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                // navigator clipboard api method
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(`${type} copied to clipboard!`);
+                }).catch(err => {
+                    fallbackCopy();
+                });
+            } else {
+                // text area method
+                fallbackCopy();
+            }
+        }
+
+        // Toast notification handler
+        let toastTimeout;
+        function showToast(message, success = true) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const iconContainer = document.getElementById('toast-icon-container');
+
+            // Update content
+            toastMessage.textContent = message;
+            if (!success) {
+                iconContainer.innerHTML = '<i data-lucide="alert-circle" class="text-red-400 w-5 h-5"></i>';
+            } else {
+                iconContainer.innerHTML = '<i data-lucide="check-circle" class="text-green-400 w-5 h-5"></i>';
+            }
+            lucide.createIcons();
+
+            // Show toast
+            toast.classList.remove('translate-y-20', 'opacity-0');
+
+            // Clear existing timeout
+            if (toastTimeout) clearTimeout(toastTimeout);
+
+            // Hide after 3 seconds
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Scroll reveal animation using Intersection Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once revealed
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealObserver.observe(reveal);
+            });
+        });
+
+        // Smooth scroll for navigation links (fixes preview iframe issues)
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    // Calculate exact position minus the fixed navigation bar height
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - navHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
