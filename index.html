@@ -18,7 +18,7 @@
                             900: '#0f172a',
                         },
                         brand: {
-                            400: '#38bdf8', // Light blue
+                            400: '#38bdf8',
                             500: '#0ea5e9',
                             600: '#0284c7',
                         }
@@ -31,7 +31,6 @@
         }
     </script>
     <style>
-        /* Custom styles for animations */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -43,7 +42,6 @@
             transform: translateY(0);
         }
 
-        /* Glassmorphism for floating nav */
         .glass-nav {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(12px);
@@ -51,7 +49,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Gradient Text */
         .text-gradient {
             background-clip: text;
             -webkit-background-clip: text;
@@ -62,14 +59,12 @@
 </head>
 
 <body class="bg-slate-900 text-slate-300 font-sans antialiased selection:bg-brand-500 selection:text-white">
-
     <!-- Toast Notification -->
     <div id="toast"
         class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-20 opacity-0 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3">
         <span id="toast-icon-container"><i data-lucide="check-circle" class="text-green-400 w-5 h-5"></i></span>
         <span id="toast-message">Copied to clipboard!</span>
     </div>
-
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-40 glass-nav transition-all duration-300">
         <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -78,6 +73,7 @@
                 <a href="#summary" class="hover:text-brand-400 transition-colors">Summary</a>
                 <a href="#skills" class="hover:text-brand-400 transition-colors">Skills</a>
                 <a href="#experience" class="hover:text-brand-400 transition-colors">Experience</a>
+                <a href="#projects" class="hover:text-brand-400 transition-colors">Projects</a>
                 <a href="#education" class="hover:text-brand-400 transition-colors">Education</a>
             </div>
             <a href="mailto:torreseduardo804@gmail.com"
@@ -86,25 +82,20 @@
             </a>
         </div>
     </nav>
-
     <!-- Hero Section -->
     <header class="min-h-screen flex items-center pt-20 relative overflow-hidden">
-        <!-- Background glow -->
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[100px] -z-10"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-[100px] -z-10"></div>
-
         <div class="max-w-5xl mx-auto px-6 w-full reveal">
             <p class="text-brand-400 font-mono mb-4 text-sm md:text-base">Hi, my name is</p>
             <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-2 tracking-tight">Eduardo Torres.</h1>
             <h2 class="text-4xl md:text-6xl font-bold text-slate-400 mb-6 tracking-tight text-gradient">I build robust
                 software solutions.</h2>
-
             <p class="max-w-2xl text-lg md:text-xl text-slate-400 leading-relaxed mb-10">
-                Fully bilingual Computer Science student and Software Developer based in San Lorenzo, PR.
+                Fully bilingual Software Developer and CS graduate based in San Juan, PR.
                 I specialize in backend development, systems troubleshooting, and data analysis to improve operational
                 efficiency.
             </p>
-
             <div class="flex flex-wrap gap-4 items-center">
                 <button onclick="copyContact('torreseduardo804@gmail.com', 'Email')"
                     class="group flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-5 py-3 rounded-xl transition-all">
@@ -139,7 +130,6 @@
             </div>
         </div>
     </header>
-
     <!-- Summary Section -->
     <section id="summary" class="py-24 bg-slate-850/50">
         <div class="max-w-4xl mx-auto px-6 reveal">
@@ -149,16 +139,17 @@
             </div>
             <div class="bg-slate-800/50 border border-slate-700/50 p-8 rounded-2xl backdrop-blur-sm shadow-xl">
                 <p class="text-lg leading-relaxed text-slate-300">
-                    Fully bilingual Computer Science student and Software Developer with a background in IT operations
+                    Fully bilingual Software Developer with a CS background and hands-on experience in IT operations
                     and technical support. Experienced in backend development, systems troubleshooting, and data
-                    analysis across Windows, iOS, and Linux environments. Proven track record of improving operational
+                    analysis across Windows, macOS, and Linux environments. Proven track record of improving operational
                     efficiency through technical solutions and clear communication. Seeking to leverage strong
-                    programming fundamentals in C++, Java, and Node.js to contribute to a remote-first engineering team.
+                    programming fundamentals in Python, Java, and JavaScript to contribute to a remote-first engineering
+                    team.
                 </p>
                 <div class="mt-6 flex gap-4">
                     <span
                         class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-brand-400"></i> San Lorenzo, PR
+                        <i data-lucide="map-pin" class="w-4 h-4 text-brand-400"></i> San Juan, PR
                     </span>
                     <span
                         class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
@@ -168,7 +159,6 @@
             </div>
         </div>
     </section>
-
     <!-- Skills Section -->
     <section id="skills" class="py-24">
         <div class="max-w-5xl mx-auto px-6 reveal">
@@ -176,9 +166,8 @@
                 <h2 class="text-3xl font-bold text-white">Skills</h2>
                 <div class="h-px bg-slate-700 flex-1"></div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Skill Category -->
+                <!-- Languages -->
                 <div
                     class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
                     <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
@@ -198,8 +187,6 @@
                         <span
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Go</span>
                         <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">PHP</span>
-                        <span
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Swift</span>
                         <span
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">F#</span>
@@ -207,8 +194,7 @@
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">SQL</span>
                     </div>
                 </div>
-
-                <!-- Skill Category -->
+                <!-- Frameworks & Web -->
                 <div
                     class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
                     <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
@@ -216,12 +202,11 @@
                     </h3>
                     <div class="flex flex-wrap gap-2">
                         <span
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Flask</span>
+                        <span
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Node.js</span>
                         <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">.NET
-                            Core</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Vue.js</span>
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Tkinter</span>
                         <span
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">HTML5</span>
                         <span
@@ -230,8 +215,7 @@
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">JSON</span>
                     </div>
                 </div>
-
-                <!-- Skill Category -->
+                <!-- Tools & VCS -->
                 <div
                     class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
                     <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
@@ -253,8 +237,7 @@
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">SQLite</span>
                     </div>
                 </div>
-
-                <!-- Skill Category -->
+                <!-- Infrastructure & Core CS -->
                 <div
                     class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
                     <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
@@ -262,9 +245,11 @@
                     </h3>
                     <div class="flex flex-wrap gap-2">
                         <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Linux/Windows/iOS/Android</span>
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Linux
+                            / Windows / macOS</span>
                         <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">DHCP/DNS</span>
+                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">DHCP
+                            / DNS</span>
                         <span
                             class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Active
                             Directory</span>
@@ -282,7 +267,6 @@
             </div>
         </div>
     </section>
-
     <!-- Experience Section -->
     <section id="experience" class="py-24 bg-slate-850/50 relative">
         <div class="max-w-4xl mx-auto px-6 reveal">
@@ -290,19 +274,15 @@
                 <h2 class="text-3xl font-bold text-white">Experience</h2>
                 <div class="h-px bg-slate-700 flex-1"></div>
             </div>
-
             <div
                 class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
-
                 <!-- Job 1 -->
                 <div
                     class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <!-- Icon -->
                     <div
                         class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-800 group-hover:border-brand-400 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors duration-300">
                         <i data-lucide="briefcase" class="w-4 h-4"></i>
                     </div>
-                    <!-- Card -->
                     <div
                         class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-slate-800/50 p-6 rounded-2xl border border-slate-700 hover:border-brand-500/50 transition-colors shadow-lg">
                         <div class="flex flex-col mb-4">
@@ -323,16 +303,13 @@
                         </ul>
                     </div>
                 </div>
-
                 <!-- Job 2 -->
                 <div
                     class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <!-- Icon -->
                     <div
                         class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-800 group-hover:border-brand-400 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors duration-300">
                         <i data-lucide="server-cog" class="w-4 h-4"></i>
                     </div>
-                    <!-- Card -->
                     <div
                         class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-slate-800/50 p-6 rounded-2xl border border-slate-700 hover:border-brand-500/50 transition-colors shadow-lg">
                         <div class="flex flex-col mb-4">
@@ -351,23 +328,121 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
-
+    <!-- Projects Section -->
+    <section id="projects" class="py-24">
+        <div class="max-w-5xl mx-auto px-6 reveal">
+            <div class="flex items-center gap-4 mb-12">
+                <h2 class="text-3xl font-bold text-white">Projects</h2>
+                <div class="h-px bg-slate-700 flex-1"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Project 1 -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
+                        <a href="https://github.com/EduardoTorresAlamo/Turn-Management-System" target="_blank"
+                            class="text-slate-400 hover:text-brand-400 transition-colors">
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Turn Management System</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Queue management app with two Python
+                        interfaces — a Flask web app and a Tkinter desktop GUI. Generates numbered tickets with form
+                        validation for walk-in and appointment users.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="text-xs text-brand-400 font-mono">Python</span>
+                        <span class="text-xs text-slate-500 font-mono">·</span>
+                        <span class="text-xs text-brand-400 font-mono">Flask</span>
+                        <span class="text-xs text-slate-500 font-mono">·</span>
+                        <span class="text-xs text-brand-400 font-mono">Tkinter</span>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
+                        <a href="https://github.com/EduardoTorresAlamo/Jangman-Project" target="_blank"
+                            class="text-slate-400 hover:text-brand-400 transition-colors">
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Multiplayer Hangman (Sockets)</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Multiplayer Hangman game built with Java
+                        sockets. Implements a client-server architecture for real-time gameplay over a network
+                        connection.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="text-xs text-brand-400 font-mono">Java</span>
+                        <span class="text-xs text-slate-500 font-mono">·</span>
+                        <span class="text-xs text-brand-400 font-mono">Sockets</span>
+                        <span class="text-xs text-slate-500 font-mono">·</span>
+                        <span class="text-xs text-brand-400 font-mono">Networking</span>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
+                        <a href="https://github.com/EduardoTorresAlamo/Freakymon.sql" target="_blank"
+                            class="text-slate-400 hover:text-brand-400 transition-colors">
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Freakymon Database</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Relational database project in PL/SQL —
+                        models a Pokémon-inspired schema with full table relationships, constraints, and sample data
+                        insertion.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="text-xs text-brand-400 font-mono">PL/SQL</span>
+                        <span class="text-xs text-slate-500 font-mono">·</span>
+                        <span class="text-xs text-brand-400 font-mono">Database Design</span>
+                    </div>
+                </div>
+                <!-- Project 4 -->
+                <div
+                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-4">
+                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
+                        <a href="https://github.com/EduardoTorresAlamo/Clean-CSV-files" target="_blank"
+                            class="text-slate-400 hover:text-brand-400 transition-colors">
+                            <i data-lucide="external-link" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">CSV Cleaner</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Python script for cleaning and normalizing
+                        CSV files. Handles case normalization and custom field formatting — originally built to automate
+                        data prep tasks at work.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="text-xs text-brand-400 font-mono">Python</span>
+                        <span class="text-xs text-slate-500 font-mono">·</span>
+                        <span class="text-xs text-brand-400 font-mono">Automation</span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <a href="https://github.com/EduardoTorresAlamo" target="_blank"
+                    class="inline-flex items-center gap-2 text-brand-400 hover:text-brand-300 transition-colors font-medium">
+                    View all projects on GitHub
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
     <!-- Education & Languages -->
-    <section id="education" class="py-24">
+    <section id="education" class="py-24 bg-slate-850/50">
         <div class="max-w-5xl mx-auto px-6 reveal">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-
                 <!-- Education -->
                 <div>
                     <div class="flex items-center gap-4 mb-8">
                         <h2 class="text-3xl font-bold text-white">Education</h2>
                         <div class="h-px bg-slate-700 flex-1"></div>
                     </div>
-
                     <div class="space-y-6">
                         <div
                             class="bg-slate-800/40 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-brand-500">
@@ -375,7 +450,6 @@
                             <p class="text-brand-400 font-medium">Universidad de Puerto Rico • Bayamón, PR</p>
                             <p class="text-slate-500 text-sm mt-2">2016 — May 2026 (Expected)</p>
                         </div>
-
                         <div
                             class="bg-slate-800/40 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-slate-600">
                             <h3 class="text-lg font-bold text-white">High School Diploma</h3>
@@ -384,14 +458,12 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- Languages -->
                 <div>
                     <div class="flex items-center gap-4 mb-8">
                         <h2 class="text-3xl font-bold text-white">Languages</h2>
                         <div class="h-px bg-slate-700 flex-1"></div>
                     </div>
-
                     <div
                         class="bg-slate-800/40 p-8 rounded-2xl border border-slate-700 h-full flex flex-col justify-center gap-8">
                         <div>
@@ -404,7 +476,6 @@
                                     style="width: 100%"></div>
                             </div>
                         </div>
-
                         <div>
                             <div class="flex justify-between items-end mb-2">
                                 <span class="text-white font-medium text-lg">English</span>
@@ -417,30 +488,23 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="bg-slate-900 py-8 border-t border-slate-800 text-center">
         <div class="max-w-5xl mx-auto px-6">
             <p class="text-slate-500 text-sm">
-                Built and designed for Eduardo Torres. <br class="md:hidden"> Powered by modern web technologies.
+                Built and designed by Eduardo Torres. <br class="md:hidden"> Powered by modern web technologies.
             </p>
         </div>
     </footer>
-
     <script>
-        // Initialize Icons
         lucide.createIcons();
-
-        // Copy to clipboard functionality
         function copyContact(text, type) {
             const fallbackCopy = () => {
                 const textArea = document.createElement("textarea");
                 textArea.value = text;
-                // Avoid scrolling to bottom
                 textArea.style.top = "0";
                 textArea.style.left = "0";
                 textArea.style.position = "fixed";
@@ -455,28 +519,21 @@
                 }
                 document.body.removeChild(textArea);
             };
-
             if (navigator.clipboard && window.isSecureContext) {
-                // navigator clipboard api method
                 navigator.clipboard.writeText(text).then(() => {
                     showToast(`${type} copied to clipboard!`);
                 }).catch(err => {
                     fallbackCopy();
                 });
             } else {
-                // text area method
                 fallbackCopy();
             }
         }
-
-        // Toast notification handler
         let toastTimeout;
         function showToast(message, success = true) {
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toast-message');
             const iconContainer = document.getElementById('toast-icon-container');
-
-            // Update content
             toastMessage.textContent = message;
             if (!success) {
                 iconContainer.innerHTML = '<i data-lucide="alert-circle" class="text-red-400 w-5 h-5"></i>';
@@ -484,29 +541,18 @@
                 iconContainer.innerHTML = '<i data-lucide="check-circle" class="text-green-400 w-5 h-5"></i>';
             }
             lucide.createIcons();
-
-            // Show toast
             toast.classList.remove('translate-y-20', 'opacity-0');
-
-            // Clear existing timeout
             if (toastTimeout) clearTimeout(toastTimeout);
-
-            // Hide after 3 seconds
             toastTimeout = setTimeout(() => {
                 toast.classList.add('translate-y-20', 'opacity-0');
             }, 3000);
         }
-
-        // Scroll reveal animation using Intersection Observer
         document.addEventListener('DOMContentLoaded', () => {
             const reveals = document.querySelectorAll('.reveal');
-
             const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        // Optional: stop observing once revealed
-                        // observer.unobserve(entry.target);
                     }
                 });
             }, {
@@ -514,25 +560,19 @@
                 threshold: 0.1,
                 rootMargin: "0px 0px -50px 0px"
             });
-
             reveals.forEach(reveal => {
                 revealObserver.observe(reveal);
             });
         });
-
-        // Smooth scroll for navigation links (fixes preview iframe issues)
         document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href').substring(1);
                 const targetElement = document.getElementById(targetId);
-
                 if (targetElement) {
-                    // Calculate exact position minus the fixed navigation bar height
                     const navHeight = document.querySelector('nav').offsetHeight;
                     const elementPosition = targetElement.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: "smooth"
