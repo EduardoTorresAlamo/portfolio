@@ -1,613 +1,1632 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth scroll-pt-24">
-
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eduardo Torres | Software Developer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: {
-                            850: '#151f32',
-                            900: '#0f172a',
-                        },
-                        brand: {
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eduardo Torres — Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: oklch(0.975 0.005 85);
+    --bg-2: oklch(0.955 0.006 85);
+    --fg: oklch(0.18 0.005 60);
+    --fg-2: oklch(0.42 0.006 60);
+    --fg-3: oklch(0.62 0.006 60);
+    --rule: oklch(0.88 0.005 85);
+    --rule-2: oklch(0.82 0.006 85);
+    --accent: oklch(0.58 0.22 255);
+    --accent-soft: oklch(0.58 0.22 255 / 0.12);
+    --warm: oklch(0.68 0.14 70);
+    --warm-soft: oklch(0.68 0.14 70 / 0.14);
+    --warm-bg: oklch(0.94 0.025 75);
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  [data-theme="dark"] {
+    --bg: oklch(0.16 0.005 60);
+    --bg-2: oklch(0.20 0.006 60);
+    --fg: oklch(0.96 0.005 85);
+    --fg-2: oklch(0.72 0.006 85);
+    --fg-3: oklch(0.52 0.006 85);
+    --rule: oklch(0.28 0.005 60);
+    --rule-2: oklch(0.34 0.006 60);
+    --accent: oklch(0.72 0.18 245);
+    --accent-soft: oklch(0.72 0.18 245 / 0.16);
+    --warm: oklch(0.78 0.14 75);
+    --warm-soft: oklch(0.78 0.14 75 / 0.15);
+    --warm-bg: oklch(0.22 0.02 70);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    transition: background 280ms ease, color 280ms ease;
+    cursor: none;
+  }
+  @media (hover: none) { body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; } }
+  a, button, input, textarea, label { cursor: none; font-family: inherit; color: inherit; }
+  @media (hover: none) { a, button, input, textarea, label { cursor: auto; } }
+  ::selection { background: var(--accent); color: var(--bg); }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+  .mono { font-family: var(--mono); font-feature-settings: "zero", "ss01"; }
+  .num { font-variant-numeric: tabular-nums; }
 
-        .glass-nav {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+  /* ===== Cursor ===== */
+  .cursor-dot, .cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+  }
+  .cursor-dot {
+    width: 5px; height: 5px;
+    background: #fff;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid #fff;
+    transition: width 180ms ease, height 180ms ease, background 180ms ease, border-color 180ms ease;
+  }
+  .cursor-ring.hover {
+    width: 56px; height: 56px;
+    background: rgba(255,255,255,0.08);
+  }
 
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(to right, #38bdf8, #818cf8);
-        }
-    </style>
+  /* ===== Layout ===== */
+  .shell { max-width: 1440px; margin: 0 auto; padding: 0 56px; }
+  @media (max-width: 900px) { .shell { padding: 0 24px; } }
+
+  /* ===== Top bar ===== */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 40;
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    background: color-mix(in oklab, var(--bg) 75%, transparent);
+    border-bottom: 1px solid var(--rule);
+    transition: background 280ms ease, border-color 280ms ease;
+  }
+  .topbar-inner {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 999px;
+    background: var(--fg);
+    color: var(--bg);
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    overflow: hidden;
+    position: relative;
+    background-image: url('assets/eduardo.jpeg');
+    background-size: cover;
+    background-position: center 22%;
+    color: transparent;
+  }
+  .avatar::after {
+    content: '';
+    position: absolute; inset: 0;
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--fg) 15%, transparent);
+    border-radius: inherit;
+    opacity: 0.6;
+  }
+  .brand-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .brand-name .dim { color: var(--fg-3); font-weight: 400; }
+
+  .nav-links {
+    display: none;
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  @media (min-width: 900px) { .nav-links { display: flex; } }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--fg-2);
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: color 180ms ease, background 180ms ease;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .nav-links a .nv-num { color: var(--fg-3); font-size: 10px; }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-links a.active { color: var(--fg); background: var(--bg-2); }
+  .nav-links a.active .nv-num { color: var(--accent); }
+
+  .top-actions { display: flex; align-items: center; gap: 8px; }
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 7px 12px;
+    background: transparent;
+    border: 1px solid var(--rule-2);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-2);
+    transition: all 180ms ease;
+  }
+  .theme-toggle:hover { border-color: var(--fg-2); color: var(--fg); }
+  .theme-toggle .dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--fg);
+    transition: background 180ms ease;
+  }
+  .cta-top {
+    display: none;
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 8px 14px;
+    background: var(--fg);
+    color: var(--bg);
+    border-radius: 4px;
+    transition: background 180ms ease;
+  }
+  @media (min-width: 700px) { .cta-top { display: inline-flex; align-items: center; gap: 8px; } }
+  .cta-top:hover { background: var(--accent); }
+  .cta-top .arr { transition: transform 180ms ease; }
+  .cta-top:hover .arr { transform: translateX(3px); }
+
+  /* ===== Section scaffolding ===== */
+  section, header.hero { position: relative; }
+  .section {
+    padding: 96px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .section:first-of-type { border-top: 0; }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    margin-bottom: 56px;
+    align-items: baseline;
+  }
+  @media (max-width: 700px) { .sec-head { grid-template-columns: 1fr; gap: 12px; } }
+  .sec-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-3);
+    letter-spacing: 0.02em;
+  }
+  .sec-title {
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+  .sec-title .k { color: var(--fg-3); font-weight: 400; font-family: var(--mono); font-size: 0.55em; margin-left: 14px; letter-spacing: 0; vertical-align: middle; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    padding: 136px 0 80px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    gap: 64px;
+  }
+  .hero-meta {
+    display: flex; justify-content: space-between; gap: 24px;
+    font-family: var(--mono); font-size: 12px; color: var(--fg-3);
+    flex-wrap: wrap;
+  }
+  .hero-meta .dot-live {
+    display: inline-block; width: 7px; height: 7px; border-radius: 999px;
+    background: oklch(0.70 0.18 145); margin-right: 8px;
+    box-shadow: 0 0 0 3px color-mix(in oklab, oklch(0.70 0.18 145) 30%, transparent);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 64px;
+    align-items: end;
+  }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .hero-name {
+    font-size: clamp(52px, 9vw, 140px);
+    font-weight: 600;
+    letter-spacing: -0.055em;
+    line-height: 0.92;
+    margin-bottom: 24px;
+  }
+  .hero-name .amp { color: var(--accent); font-weight: 400; }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: clamp(14px, 1.3vw, 18px);
+    color: var(--fg-2);
+    letter-spacing: -0.01em;
+    margin-bottom: 40px;
+    max-width: 36ch;
+    line-height: 1.5;
+  }
+  .hero-role .hl { color: var(--fg); background: var(--accent-soft); padding: 2px 6px; border-radius: 3px; }
+
+  .facts {
+    display: flex; flex-direction: column; gap: 4px;
+    border-left: 1px solid var(--rule);
+    padding-left: 20px;
+  }
+  .fact {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--rule);
+    align-items: baseline;
+  }
+  .fact:last-child { border-bottom: 0; }
+  .fact-k { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
+  .fact-v { color: var(--fg); }
+
+  .ctas {
+    display: flex; flex-wrap: wrap;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 13px;
+    align-items: center;
+  }
+  .cta-link {
+    text-decoration: none;
+    color: var(--fg);
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--fg);
+    transition: color 180ms ease, border-color 180ms ease, gap 180ms ease;
+  }
+  .cta-link:hover { color: var(--accent); border-color: var(--accent); gap: 14px; }
+  .cta-link.primary {
+    background: var(--fg);
+    color: var(--bg);
+    padding: 10px 16px;
+    border-radius: 2px;
+    border-bottom: 0;
+  }
+  .cta-link.primary:hover { background: var(--accent); color: #fff; }
+  .cta-sep { color: var(--fg-3); }
+
+  /* ===== Summary ===== */
+  .summary-wrap {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .summary-wrap { grid-template-columns: 1fr; } }
+  .summary-inner {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .summary-inner { grid-template-columns: 1fr; gap: 32px; } }
+
+  .portrait {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    background: var(--warm-bg) url('assets/eduardo.jpeg') center 30% / cover no-repeat;
+    border: 1px solid var(--rule-2);
+    display: grid; place-items: center;
+    overflow: hidden;
+  }
+  .portrait::before {
+    content: '';
+    position: absolute; inset: 12px;
+    border: 1px solid color-mix(in oklab, var(--warm) 70%, transparent);
+    pointer-events: none;
+  }
+  .portrait-label { display: none; }
+  .portrait-caption {
+    position: absolute;
+    bottom: 10px; left: 10px; right: 10px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex; justify-content: space-between;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  .summary-body p.lede {
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    color: var(--fg);
+    max-width: 22ch;
+  }
+  .summary-body p.lede .hl-b { color: var(--accent); }
+  .summary-body p.lede .hl-w {
+    background: linear-gradient(180deg, transparent 65%, var(--warm-soft) 65%);
+    padding: 0 2px;
+  }
+  .summary-body p.body-copy {
+    margin-top: 24px;
+    color: var(--fg-2);
+    font-size: clamp(15px, 1.35vw, 17px);
+    max-width: 52ch;
+    letter-spacing: -0.008em;
+    line-height: 1.6;
+  }
+
+  .motto {
+    margin-top: 32px;
+    padding: 20px 24px;
+    border-left: 3px solid var(--warm);
+    background: var(--warm-soft);
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--fg);
+    letter-spacing: -0.005em;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .motto .quot {
+    font-family: var(--sans);
+    font-size: 32px;
+    line-height: 0.9;
+    color: var(--warm);
+    font-weight: 700;
+  }
+  .motto strong { font-weight: 600; }
+  .motto .attr {
+    display: block;
+    font-size: 10px;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 8px;
+  }
+
+  .stats {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  @media (max-width: 700px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat {
+    padding: 20px 0;
+    border-right: 1px solid var(--rule);
+    padding-right: 16px;
+  }
+  .stat:last-child { border-right: 0; }
+  @media (max-width: 700px) {
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--rule); }
+    .stat { padding-left: 16px; }
+    .stat:nth-child(odd) { padding-left: 0; }
+  }
+  .stat-n {
+    font-family: var(--mono);
+    font-size: clamp(28px, 3.2vw, 40px);
+    font-weight: 600;
+    color: var(--warm);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-n .sm { font-size: 0.55em; color: var(--fg-3); margin-left: 4px; }
+  .stat-k {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 10px;
+    line-height: 1.4;
+  }
+
+  .loves {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    align-items: baseline;
+  }
+  @media (max-width: 700px) { .loves { grid-template-columns: 1fr; gap: 12px; } }
+  .loves-k {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .loves-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg);
+  }
+  .loves-items span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .loves-items span::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--warm);
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .loves-items span.b::before { background: var(--accent); }
+
+  /* ===== Skills ===== */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .skills-grid { grid-template-columns: 1fr; } }
+  .skill-group {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .skill-group:first-child { border-top: 1px solid var(--rule); }
+  @media (max-width: 700px) { .skill-group { grid-template-columns: 1fr; gap: 12px; } }
+  .skill-group h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fg-3);
+  }
+  .skill-group h3 .n {
+    display: inline-block;
+    margin-right: 10px;
+    color: var(--fg-2);
+    background: var(--bg-2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px 12px; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg);
+    position: relative;
+    padding: 4px 0;
+    transition: color 180ms ease;
+  }
+  .tag:hover { color: var(--accent); }
+  .tag::after {
+    content: '·';
+    margin-left: 12px;
+    color: var(--fg-3);
+  }
+  .tag:last-child::after { display: none; }
+
+  /* ===== Experience ===== */
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .exp-grid { grid-template-columns: 1fr; } }
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 7px;
+    width: 1px;
+    background: var(--rule);
+  }
+  .job {
+    position: relative;
+    padding-left: 40px;
+    padding-bottom: 48px;
+  }
+  .job:last-child { padding-bottom: 0; }
+  .job::before {
+    content: '';
+    position: absolute;
+    left: 1px; top: 8px;
+    width: 13px; height: 13px; border-radius: 999px;
+    background: var(--bg);
+    border: 1px solid var(--rule-2);
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+  .job:hover::before { background: var(--accent); border-color: var(--accent); }
+  .job-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .job-date .chip {
+    display: inline-block;
+    margin-left: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+  }
+  .job-title {
+    font-size: clamp(22px, 2.4vw, 30px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+  .job-company {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-2);
+    margin-bottom: 18px;
+  }
+  .job-company .arr { color: var(--fg-3); margin: 0 6px; }
+  .job ul { list-style: none; display: flex; flex-direction: column; gap: 10px; max-width: 60ch; }
+  .job ul li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 15px;
+    color: var(--fg-2);
+    line-height: 1.55;
+  }
+  .job ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0; top: 0;
+    color: var(--accent);
+    font-family: var(--mono);
+  }
+
+  /* ===== Projects ===== */
+  .proj-list {
+    border-top: 1px solid var(--rule);
+  }
+  .proj {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr 1fr 60px;
+    gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: padding 220ms ease;
+  }
+  @media (max-width: 900px) {
+    .proj { grid-template-columns: 80px 1fr 40px; row-gap: 8px; }
+    .proj-stack, .proj-blurb { grid-column: 2 / 3; }
+  }
+  .proj::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 0;
+    background: var(--bg-2);
+    z-index: -1;
+    transition: height 220ms ease;
+  }
+  .proj:hover { padding-left: 16px; padding-right: 16px; }
+  .proj:hover::after { height: 100%; }
+  .proj-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-3);
+  }
+  .proj-name {
+    font-size: clamp(18px, 1.9vw, 22px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .proj-name .proj-hint {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+  }
+  .proj-blurb {
+    font-size: 14px;
+    color: var(--fg-2);
+    line-height: 1.55;
+    max-width: 42ch;
+  }
+  .proj-stack {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-2);
+    display: flex; flex-wrap: wrap; gap: 4px 10px;
+  }
+  .proj-stack span + span::before { content: '/ '; color: var(--fg-3); margin-right: 4px; }
+  .proj-arrow {
+    font-family: var(--mono);
+    font-size: 18px;
+    color: var(--fg-3);
+    justify-self: end;
+    transition: transform 220ms ease, color 220ms ease;
+  }
+  .proj:hover .proj-arrow { transform: translate(4px, -4px); color: var(--accent); }
+  .proj-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-3);
+  }
+  .proj-foot a {
+    color: var(--fg); text-decoration: none;
+    border-bottom: 1px solid var(--fg);
+    padding-bottom: 2px;
+    transition: color 180ms ease, border-color 180ms ease;
+  }
+  .proj-foot a:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ===== Education + Languages + Currently ===== */
+  .split-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .split-grid { grid-template-columns: 1fr; gap: 48px; } }
+  .edu-item {
+    padding: 20px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .edu-item:last-child { border-bottom: 1px solid var(--rule); }
+  .edu-item .dates {
+    font-family: var(--mono); font-size: 11px; color: var(--fg-3);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .edu-item .dates .chip {
+    background: var(--accent-soft); color: var(--accent);
+    padding: 1px 6px; border-radius: 3px; margin-left: 6px; font-size: 10px;
+  }
+  .edu-item h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 4px; }
+  .edu-item p { font-family: var(--mono); font-size: 12px; color: var(--fg-2); }
+
+  .lang-row {
+    padding: 20px 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .lang-row:last-child { border-bottom: 1px solid var(--rule); }
+  .lang-name { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+  .lang-level { font-family: var(--mono); font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .lang-bar { grid-column: 1 / -1; height: 2px; background: var(--rule); position: relative; overflow: hidden; margin-top: 8px; }
+  .lang-bar::after {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    background: var(--fg);
+    width: var(--w, 100%);
+  }
+
+  /* ===== Currently block ===== */
+  .currently {
+    background: var(--bg-2);
+    padding: 40px;
+    margin-top: 64px;
+    border: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 32px;
+  }
+  @media (max-width: 700px) { .currently { grid-template-columns: 1fr; padding: 24px; gap: 16px; } }
+  .currently .kicker {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .currently .kicker .dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--accent);
+    margin-right: 8px;
+    border-radius: 999px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .currently p { font-size: 17px; color: var(--fg); line-height: 1.55; letter-spacing: -0.01em; max-width: 54ch; }
+  .currently p + p { margin-top: 12px; color: var(--fg-2); font-size: 15px; }
+
+  /* ===== Contact ===== */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-lede {
+    font-size: clamp(22px, 2.6vw, 32px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    max-width: 20ch;
+  }
+  .contact-lede .accent { color: var(--accent); }
+  .contact-methods {
+    margin-top: 24px;
+    display: flex; flex-direction: column; gap: 2px;
+    font-family: var(--mono); font-size: 12px;
+  }
+  .cm-row {
+    display: grid; grid-template-columns: 70px 1fr; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--rule);
+  }
+  .cm-row:first-child { border-top: 1px solid var(--rule); }
+  .cm-k { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
+  .cm-row a { color: var(--fg); text-decoration: none; transition: color 180ms ease; }
+  .cm-row a:hover { color: var(--accent); }
+
+  .form { display: flex; flex-direction: column; gap: 20px; }
+  .field { display: flex; flex-direction: column; gap: 6px; position: relative; }
+  .field label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex; justify-content: space-between;
+  }
+  .field label .req { color: var(--accent); }
+  .field input, .field textarea {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--rule-2);
+    padding: 10px 0;
+    font-size: 16px;
+    color: var(--fg);
+    transition: border-color 200ms ease;
+    outline: none;
+    resize: none;
+    font-family: var(--sans);
+  }
+  .field textarea { min-height: 100px; }
+  .field input:focus, .field textarea:focus { border-color: var(--fg); }
+  .field.error input, .field.error textarea { border-color: oklch(0.62 0.22 25); }
+  .field .err-msg {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: oklch(0.62 0.22 25);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .field .char {
+    position: absolute; right: 0; bottom: 12px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-3);
+    pointer-events: none;
+  }
+  .btn-submit {
+    align-self: flex-start;
+    background: var(--fg);
+    color: var(--bg);
+    border: 0;
+    padding: 14px 28px;
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    transition: background 180ms ease, color 180ms ease;
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 8px;
+  }
+  .btn-submit:hover:not(:disabled) { background: var(--accent); color: #fff; }
+  .btn-submit:disabled { opacity: 0.55; }
+  .form-status {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 12px 16px;
+    border: 1px solid var(--rule-2);
+    background: var(--bg-2);
+    margin-top: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .form-status.ok { border-color: oklch(0.70 0.18 145); color: oklch(0.50 0.15 145); }
+  [data-theme="dark"] .form-status.ok { color: oklch(0.80 0.18 145); }
+  .form-status .stt-dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+
+  /* ===== Footer ===== */
+  .footer {
+    border-top: 1px solid var(--rule);
+    padding: 48px 0 32px;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    align-items: end;
+  }
+  @media (max-width: 700px) { .foot-grid { grid-template-columns: 1fr; gap: 24px; } }
+  .foot-mono { font-family: var(--mono); font-size: 11px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; }
+  .foot-big { font-size: clamp(48px, 8vw, 96px); font-weight: 600; letter-spacing: -0.055em; line-height: 0.9; }
+  .foot-big .amp { color: var(--accent); }
+  .foot-links { display: flex; gap: 20px; font-family: var(--mono); font-size: 12px; }
+  .foot-links a { color: var(--fg-2); text-decoration: none; transition: color 180ms ease; }
+  .foot-links a:hover { color: var(--accent); }
+
+  /* ===== Reveal ===== */
+  .rv { opacity: 0; transform: translateY(18px); transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .rv.in { opacity: 1; transform: translateY(0); }
+
+  /* ===== Scroll progress ===== */
+  .progress {
+    position: fixed; left: 0; right: 0; top: 63px;
+    height: 1px; background: transparent;
+    z-index: 41;
+  }
+  .progress::after {
+    content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+    width: var(--p, 0%);
+    background: var(--accent);
+    transition: width 80ms linear;
+  }
+
+  /* ===== Tweak panel ===== */
+  .tweaks-panel {
+    position: fixed; bottom: 20px; right: 20px;
+    z-index: 60;
+    width: 280px;
+    background: var(--bg);
+    border: 1px solid var(--rule-2);
+    padding: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    display: none;
+    box-shadow: 0 8px 40px -12px oklch(0 0 0 / 0.3);
+  }
+  .tweaks-panel.on { display: block; }
+  .tweaks-panel h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--fg-3); margin-bottom: 12px; display: flex; justify-content: space-between; }
+  .tweak-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid var(--rule); }
+  .tweak-row label { color: var(--fg-2); }
+  .tweak-swatches { display: flex; gap: 6px; }
+  .tw-sw { width: 18px; height: 18px; border-radius: 999px; border: 1px solid var(--rule-2); cursor: pointer; transition: transform 150ms ease; }
+  .tw-sw:hover { transform: scale(1.15); }
+  .tw-sw.active { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .tw-toggle { background: var(--bg-2); border: 1px solid var(--rule-2); padding: 4px 10px; font-family: inherit; font-size: 10px; color: var(--fg); text-transform: uppercase; letter-spacing: 0.08em; border-radius: 2px; }
+  .tw-toggle:hover { border-color: var(--fg-2); }
+
+  /* Keyboard hint */
+  kbd {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 5px;
+    background: var(--bg-2);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    color: var(--fg-2);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .rv { opacity: 1; transform: none; }
+  }
+</style>
 </head>
+<body>
 
-<body class="bg-slate-900 text-slate-300 font-sans antialiased selection:bg-brand-500 selection:text-white">
-    <!-- Toast Notification -->
-    <div id="toast"
-        class="fixed bottom-5 right-5 z-50 transform transition-all duration-300 translate-y-20 opacity-0 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3">
-        <span id="toast-icon-container"><i data-lucide="check-circle" class="text-green-400 w-5 h-5"></i></span>
-        <span id="toast-message">Copied to clipboard!</span>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<div class="progress" id="progress"></div>
+
+<!-- TOP BAR -->
+<nav class="topbar">
+  <div class="shell topbar-inner">
+    <a href="#top" class="brand" data-hover>
+      <div class="avatar" aria-hidden="true">ET</div>
+      <div class="brand-name">eduardo-torres<span class="dim">.dev</span></div>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#summary" data-hover data-sec="summary"><span class="nv-num">01</span> Summary</a>
+      <a href="#skills" data-hover data-sec="skills"><span class="nv-num">02</span> Skills</a>
+      <a href="#experience" data-hover data-sec="experience"><span class="nv-num">03</span> Experience</a>
+      <a href="#projects" data-hover data-sec="projects"><span class="nv-num">04</span> Projects</a>
+      <a href="#education" data-hover data-sec="education"><span class="nv-num">05</span> Education</a>
+      <a href="#contact" data-hover data-sec="contact"><span class="nv-num">06</span> Contact</a>
     </div>
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-40 glass-nav transition-all duration-300">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-white tracking-tight">ET<span class="text-brand-500">.</span></a>
-            <div class="hidden md:flex gap-6 text-sm font-medium">
-                <a href="#summary" class="hover:text-brand-400 transition-colors">Summary</a>
-                <a href="#skills" class="hover:text-brand-400 transition-colors">Skills</a>
-                <a href="#experience" class="hover:text-brand-400 transition-colors">Experience</a>
-                <a href="#projects" class="hover:text-brand-400 transition-colors">Projects</a>
-                <a href="#education" class="hover:text-brand-400 transition-colors">Education</a>
-            </div>
-            <a href="mailto:torreseduardo804@gmail.com"
-                class="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-brand-500/30">
-                Hire Me
-            </a>
-        </div>
-    </nav>
-    <!-- Hero Section -->
-    <header class="min-h-screen flex items-center pt-20 relative overflow-hidden">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[100px] -z-10"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/20 rounded-full blur-[100px] -z-10"></div>
-        <div class="max-w-5xl mx-auto px-6 w-full reveal">
-            <p class="text-brand-400 font-mono mb-4 text-sm md:text-base">Hi, my name is</p>
-            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-2 tracking-tight">Eduardo Torres.</h1>
-            <h2 class="text-4xl md:text-6xl font-bold text-slate-400 mb-6 tracking-tight text-gradient">I build robust
-                software solutions.</h2>
-            <p class="max-w-2xl text-lg md:text-xl text-slate-400 leading-relaxed mb-10">
-                Fully bilingual Software Developer and CS graduate based in San Juan, PR.
-                I specialize in backend development, systems troubleshooting, and data analysis to improve operational
-                efficiency.
-            </p>
-            <div class="flex flex-wrap gap-4 items-center">
-                <button onclick="copyContact('torreseduardo804@gmail.com', 'Email')"
-                    class="group flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-5 py-3 rounded-xl transition-all">
-                    <i data-lucide="mail"
-                        class="w-5 h-5 text-slate-400 group-hover:text-brand-400 transition-colors"></i>
-                    <span class="font-medium text-white">Email Me</span>
-                </button>
-                <button onclick="copyContact('+19392670235', 'Phone number')"
-                    class="group flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-5 py-3 rounded-xl transition-all">
-                    <i data-lucide="phone"
-                        class="w-5 h-5 text-slate-400 group-hover:text-brand-400 transition-colors"></i>
-                    <span class="font-medium text-white">Copy Phone</span>
-                </button>
-                <a href="https://www.linkedin.com/in/eduardo-torres-787087221" target="_blank"
-                    class="group flex items-center gap-2 bg-slate-800 hover:bg-[#0A66C2] border border-slate-700 px-5 py-3 rounded-xl transition-all">
-                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white transition-colors fill-current"
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                    <span class="font-medium text-white">LinkedIn</span>
-                </a>
-                <a href="https://github.com/EduardoTorresAlamo" target="_blank"
-                    class="group flex items-center gap-2 bg-slate-800 hover:bg-[#333] border border-slate-700 px-5 py-3 rounded-xl transition-all">
-                    <svg class="w-5 h-5 text-slate-400 group-hover:text-white transition-colors fill-current"
-                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                    </svg>
-                    <span class="font-medium text-white">GitHub</span>
-                </a>
-                <a href="Eduardo_Torres_Resume.pdf" download="Eduardo_Torres_Resume.pdf"
-                    class="group flex items-center gap-2 bg-brand-500 hover:bg-brand-400 px-5 py-3 rounded-xl transition-all shadow-lg shadow-brand-500/25">
-                    <i data-lucide="download" class="w-5 h-5 text-white"></i>
-                    <span class="font-medium text-white">Resume</span>
-                </a>
-            </div>
-        </div>
-    </header>
-    <!-- Summary Section -->
-    <section id="summary" class="py-24 bg-slate-850/50">
-        <div class="max-w-4xl mx-auto px-6 reveal">
-            <div class="flex items-center gap-4 mb-8">
-                <h2 class="text-3xl font-bold text-white">Summary</h2>
-                <div class="h-px bg-slate-700 flex-1"></div>
-            </div>
-            <div class="bg-slate-800/50 border border-slate-700/50 p-8 rounded-2xl backdrop-blur-sm shadow-xl">
-                <p class="text-lg leading-relaxed text-slate-300">
-                    Fully bilingual Software Developer with a CS background and hands-on experience in IT operations
-                    and technical support. Experienced in backend development, systems troubleshooting, and data
-                    analysis across Windows, macOS, and Linux environments. Proven track record of improving operational
-                    efficiency through technical solutions and clear communication. Seeking to leverage strong
-                    programming fundamentals in Python, Java, and JavaScript to contribute to a remote-first engineering
-                    team.
-                </p>
-                <div class="mt-6 flex gap-4">
-                    <span
-                        class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                        <i data-lucide="map-pin" class="w-4 h-4 text-brand-400"></i> San Juan, PR
-                    </span>
-                    <span
-                        class="flex items-center gap-2 text-sm text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
-                        <i data-lucide="globe" class="w-4 h-4 text-brand-400"></i> Open to Remote
-                    </span>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Skills Section -->
-    <section id="skills" class="py-24">
-        <div class="max-w-5xl mx-auto px-6 reveal">
-            <div class="flex items-center gap-4 mb-12">
-                <h2 class="text-3xl font-bold text-white">Skills</h2>
-                <div class="h-px bg-slate-700 flex-1"></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Languages -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
-                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="code-2" class="w-5 h-5 text-brand-400"></i> Languages
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">C++</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Java</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">C#</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Python</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">JavaScript</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Go</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Swift</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">F#</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">SQL</span>
-                    </div>
-                </div>
-                <!-- Frameworks & Web -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
-                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="layers" class="w-5 h-5 text-brand-400"></i> Frameworks & Web
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Flask</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Node.js</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Tkinter</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">HTML5</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">CSS3</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">JSON</span>
-                    </div>
-                </div>
-                <!-- Tools & VCS -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
-                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="terminal" class="w-5 h-5 text-brand-400"></i> Tools & VCS
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Git</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">GitHub</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Visual
-                            Studio</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Eclipse</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">MySQL</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">SQLite</span>
-                    </div>
-                </div>
-                <!-- Infrastructure & Core CS -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-colors">
-                    <h3 class="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-                        <i data-lucide="server" class="w-5 h-5 text-brand-400"></i> Infrastructure & Core CS
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Linux
-                            / Windows / macOS</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">DHCP
-                            / DNS</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Active
-                            Directory</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Data
-                            Structures & Algorithms</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">OOP
-                            & System Design</span>
-                        <span
-                            class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-sm text-slate-300 hover:text-brand-400 hover:border-brand-500/50 cursor-default transition-all">Unit
-                            Testing</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Experience Section -->
-    <section id="experience" class="py-24 bg-slate-850/50 relative">
-        <div class="max-w-4xl mx-auto px-6 reveal">
-            <div class="flex items-center gap-4 mb-12">
-                <h2 class="text-3xl font-bold text-white">Experience</h2>
-                <div class="h-px bg-slate-700 flex-1"></div>
-            </div>
-            <div
-                class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-700 before:to-transparent">
-                <!-- Job 1 -->
-                <div
-                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div
-                        class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-800 group-hover:border-brand-400 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors duration-300">
-                        <i data-lucide="briefcase" class="w-4 h-4"></i>
-                    </div>
-                    <div
-                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-slate-800/50 p-6 rounded-2xl border border-slate-700 hover:border-brand-500/50 transition-colors shadow-lg">
-                        <div class="flex flex-col mb-4">
-                            <span class="text-brand-400 font-mono text-sm mb-1">May 2023 — Present</span>
-                            <h3 class="text-xl font-bold text-white">Digital Payments Support Specialist</h3>
-                            <span class="text-slate-400 font-medium">Accepta Payments • San Juan, PR</span>
-                        </div>
-                        <ul
-                            class="text-slate-300 space-y-2 text-sm leading-relaxed list-disc list-inside marker:text-brand-500">
-                            <li>Provide high-level technical support for a complex payment platform, focusing on backend
-                                stability and uptime.</li>
-                            <li>Perform regular data analysis using SQL to identify performance bottlenecks and areas
-                                for platform improvement.</li>
-                            <li>Serve as a key stakeholder in Change Management processes, ensuring software updates are
-                                deployed with minimal user impact.</li>
-                            <li>Monitor infrastructure health and collaborate with developers to debug and resolve
-                                production issues.</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Job 2 -->
-                <div
-                    class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div
-                        class="flex items-center justify-center w-10 h-10 rounded-full border border-slate-700 bg-slate-800 group-hover:border-brand-400 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 transition-colors duration-300">
-                        <i data-lucide="server-cog" class="w-4 h-4"></i>
-                    </div>
-                    <div
-                        class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-slate-800/50 p-6 rounded-2xl border border-slate-700 hover:border-brand-500/50 transition-colors shadow-lg">
-                        <div class="flex flex-col mb-4">
-                            <span class="text-brand-400 font-mono text-sm mb-1">Oct 2021 — May 2023</span>
-                            <h3 class="text-xl font-bold text-white">IT Assistant</h3>
-                            <span class="text-slate-400 font-medium">All Ways 99 • Caguas, PR</span>
-                        </div>
-                        <ul
-                            class="text-slate-300 space-y-2 text-sm leading-relaxed list-disc list-inside marker:text-brand-500">
-                            <li>Configured and programmed hardware and software for POS systems and network access
-                                points across 98 retail locations.</li>
-                            <li>Automated repetitive setup tasks, significantly reducing the onboarding time for new
-                                hardware.</li>
-                            <li>Provided remote and on-site technical assistance for a diverse workforce, maintaining
-                                high efficiency in warehouse and office operations.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Projects Section -->
-    <section id="projects" class="py-24">
-        <div class="max-w-5xl mx-auto px-6 reveal">
-            <div class="flex items-center gap-4 mb-12">
-                <h2 class="text-3xl font-bold text-white">Projects</h2>
-                <div class="h-px bg-slate-700 flex-1"></div>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Project 1 -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
-                        <a href="https://github.com/EduardoTorresAlamo/Turn-Management-System" target="_blank"
-                            class="text-slate-400 hover:text-brand-400 transition-colors">
-                            <i data-lucide="external-link" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Turn Management System</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Queue management app with two Python
-                        interfaces — a Flask web app and a Tkinter desktop GUI. Generates numbered tickets with form
-                        validation for walk-in and appointment users.</p>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="text-xs text-brand-400 font-mono">Python</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Flask</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Tkinter</span>
-                    </div>
-                </div>
-                <!-- Project 2 -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
-                        <a href="https://github.com/EduardoTorresAlamo/Jangman-Project" target="_blank"
-                            class="text-slate-400 hover:text-brand-400 transition-colors">
-                            <i data-lucide="external-link" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Multiplayer Hangman (Sockets)</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Multiplayer Hangman game built with Java
-                        sockets. Implements a client-server architecture for real-time gameplay over a network
-                        connection.</p>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="text-xs text-brand-400 font-mono">Java</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Sockets</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Networking</span>
-                    </div>
-                </div>
-                <!-- Project 3 -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
-                        <a href="https://github.com/EduardoTorresAlamo/Freakymon.sql" target="_blank"
-                            class="text-slate-400 hover:text-brand-400 transition-colors">
-                            <i data-lucide="external-link" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Freakymon Database</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Relational database project in PL/SQL —
-                        models a Pokémon-inspired schema with full table relationships, constraints, and sample data
-                        insertion.</p>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="text-xs text-brand-400 font-mono">PL/SQL</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Database Design</span>
-                    </div>
-                </div>
-                <!-- Project 4 -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
-                        <a href="https://github.com/EduardoTorresAlamo/Clean-CSV-files" target="_blank"
-                            class="text-slate-400 hover:text-brand-400 transition-colors">
-                            <i data-lucide="external-link" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2">CSV Cleaner</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Python script for cleaning and normalizing
-                        CSV files. Handles case normalization and custom field formatting — originally built to automate
-                        data prep tasks at work.</p>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="text-xs text-brand-400 font-mono">Python</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Automation</span>
-                    </div>
-                </div>
-                <!-- Project 5 -->
-                <div
-                    class="bg-slate-800/40 border border-slate-700/50 p-6 rounded-2xl hover:border-brand-500/30 transition-all hover:-translate-y-1 flex flex-col">
-                    <div class="flex items-center justify-between mb-4">
-                        <i data-lucide="folder-open" class="w-8 h-8 text-brand-400"></i>
-                        <a href="https://github.com/EduardoTorresAlamo/dynamic-programming-java" target="_blank"
-                            class="text-slate-400 hover:text-brand-400 transition-colors">
-                            <i data-lucide="external-link" class="w-5 h-5"></i>
-                        </a>
-                    </div>
-                    <h3 class="text-lg font-bold text-white mb-2">Dynamic Programming (Java)</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed flex-1">Java implementations of core dynamic
-                        programming algorithms — memoization, tabulation, and optimal substructure problems. Focused on
-                        clean code and algorithmic efficiency.</p>
-                    <div class="flex flex-wrap gap-2 mt-4">
-                        <span class="text-xs text-brand-400 font-mono">Java</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Algorithms</span>
-                        <span class="text-xs text-slate-500 font-mono">·</span>
-                        <span class="text-xs text-brand-400 font-mono">Data Structures</span>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-8 text-center">
-                <a href="https://github.com/EduardoTorresAlamo" target="_blank"
-                    class="inline-flex items-center gap-2 text-brand-400 hover:text-brand-300 transition-colors font-medium">
-                    View all projects on GitHub
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-    <!-- Education & Languages -->
-    <section id="education" class="py-24 bg-slate-850/50">
-        <div class="max-w-5xl mx-auto px-6 reveal">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                <!-- Education -->
-                <div>
-                    <div class="flex items-center gap-4 mb-8">
-                        <h2 class="text-3xl font-bold text-white">Education</h2>
-                        <div class="h-px bg-slate-700 flex-1"></div>
-                    </div>
-                    <div class="space-y-6">
-                        <div
-                            class="bg-slate-800/40 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-brand-500">
-                            <h3 class="text-lg font-bold text-white">B.S. in Computer Science</h3>
-                            <p class="text-brand-400 font-medium">Universidad de Puerto Rico • Bayamón, PR</p>
-                            <p class="text-slate-500 text-sm mt-2">2016 — May 2026 (Expected)</p>
-                        </div>
-                        <div
-                            class="bg-slate-800/40 p-6 rounded-2xl border border-slate-700 border-l-4 border-l-slate-600">
-                            <h3 class="text-lg font-bold text-white">High School Diploma</h3>
-                            <p class="text-slate-300 font-medium">Esc. Voc. Antonio Fernos Isern • San Lorenzo, PR</p>
-                            <p class="text-slate-500 text-sm mt-2">2013 — 2015</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Languages -->
-                <div>
-                    <div class="flex items-center gap-4 mb-8">
-                        <h2 class="text-3xl font-bold text-white">Languages</h2>
-                        <div class="h-px bg-slate-700 flex-1"></div>
-                    </div>
-                    <div
-                        class="bg-slate-800/40 p-8 rounded-2xl border border-slate-700 h-full flex flex-col justify-center gap-8">
-                        <div>
-                            <div class="flex justify-between items-end mb-2">
-                                <span class="text-white font-medium text-lg">Spanish</span>
-                                <span class="text-brand-400 text-sm font-mono">Native / Expert</span>
-                            </div>
-                            <div class="w-full bg-slate-900 rounded-full h-2.5">
-                                <div class="bg-gradient-to-r from-brand-600 to-brand-400 h-2.5 rounded-full"
-                                    style="width: 100%"></div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between items-end mb-2">
-                                <span class="text-white font-medium text-lg">English</span>
-                                <span class="text-brand-400 text-sm font-mono">Fluent</span>
-                            </div>
-                            <div class="w-full bg-slate-900 rounded-full h-2.5">
-                                <div class="bg-gradient-to-r from-brand-600 to-brand-400 h-2.5 rounded-full"
-                                    style="width: 90%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Footer -->
-    <footer class="bg-slate-900 py-8 border-t border-slate-800 text-center">
-        <div class="max-w-5xl mx-auto px-6">
-            <p class="text-slate-500 text-sm">
-                Built and designed by Eduardo Torres. <br class="md:hidden"> Powered by modern web technologies.
-            </p>
-        </div>
-    </footer>
-    <script>
-        lucide.createIcons();
-        function copyContact(text, type) {
-            const fallbackCopy = () => {
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                textArea.style.top = "0";
-                textArea.style.left = "0";
-                textArea.style.position = "fixed";
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showToast(`${type} copied to clipboard!`);
-                } catch (err) {
-                    showToast('Failed to copy. Please try manually.', false);
-                }
-                document.body.removeChild(textArea);
-            };
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast(`${type} copied to clipboard!`);
-                }).catch(err => {
-                    fallbackCopy();
-                });
-            } else {
-                fallbackCopy();
-            }
-        }
-        let toastTimeout;
-        function showToast(message, success = true) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            const iconContainer = document.getElementById('toast-icon-container');
-            toastMessage.textContent = message;
-            if (!success) {
-                iconContainer.innerHTML = '<i data-lucide="alert-circle" class="text-red-400 w-5 h-5"></i>';
-            } else {
-                iconContainer.innerHTML = '<i data-lucide="check-circle" class="text-green-400 w-5 h-5"></i>';
-            }
-            lucide.createIcons();
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            if (toastTimeout) clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            const reveals = document.querySelectorAll('.reveal');
-            const revealObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
-                });
-            }, {
-                root: null,
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
-            });
-            reveals.forEach(reveal => {
-                revealObserver.observe(reveal);
-            });
-        });
-        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    const navHeight = document.querySelector('nav').offsetHeight;
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
-                }
-            });
-        });
-    </script>
-</body>
+    <div class="top-actions">
+      <button class="theme-toggle" id="themeToggle" data-hover aria-label="Toggle theme">
+        <span class="dot"></span>
+        <span id="themeLabel">LIGHT</span>
+      </button>
+      <a href="#contact" class="cta-top" data-hover>Hire me <span class="arr">→</span></a>
+    </div>
+  </div>
+</nav>
 
+<main class="shell" id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-meta rv">
+      <div>
+        <span class="dot-live"></span>Available for full-time · Remote-first
+      </div>
+      <div>
+        Portfolio <span style="color:var(--fg-2)">v2.0</span> · Updated Apr 2026
+      </div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1 class="hero-name rv">
+          Eduardo<br/>
+          Torres<span class="amp">.</span>
+        </h1>
+        <p class="hero-role rv">
+          Software developer focused on <span class="hl">backend systems</span>, reliability, and
+          data-driven operations. Currently supporting a production payments platform in San Juan, PR.
+        </p>
+        <div class="ctas rv">
+          <a href="#contact" class="cta-link primary" data-hover>Get in touch <span>→</span></a>
+          <a href="Eduardo_Torres_Resume.pdf" download class="cta-link" data-hover>Download CV <span>↓</span></a>
+          <span class="cta-sep mono">·</span>
+          <a href="https://github.com/EduardoTorresAlamo" target="_blank" rel="noopener" class="cta-link" data-hover>GitHub <span>↗</span></a>
+          <a href="https://www.linkedin.com/in/eduardo-torres-787087221" target="_blank" rel="noopener" class="cta-link" data-hover>LinkedIn <span>↗</span></a>
+        </div>
+      </div>
+
+      <aside class="facts rv" aria-label="Quick facts">
+        <div class="fact">
+          <span class="fact-k">Role</span>
+          <span class="fact-v">Software Developer / Backend</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k">Based</span>
+          <span class="fact-v">San Juan, Puerto Rico · UTC−4</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k">Stack</span>
+          <span class="fact-v">Python · Java · JavaScript · SQL</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k">Langs</span>
+          <span class="fact-v">English · Español</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k">Status</span>
+          <span class="fact-v">Open to full-time, remote-first</span>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <!-- 01 SUMMARY -->
+  <section class="section" id="summary" data-screen-label="01 Summary">
+    <div class="sec-head rv">
+      <div class="sec-num">§ 01 / 06</div>
+      <h2 class="sec-title">Summary<span class="k">// about</span></h2>
+    </div>
+    <div class="summary-wrap rv">
+      <div></div>
+      <div>
+        <div class="summary-inner">
+          <figure class="portrait" aria-label="Photo placeholder">
+            <span class="portrait-label">photo · 4:5</span>
+            <figcaption class="portrait-caption">
+              <span>ET / 2026</span>
+              <span>SJU · PR</span>
+            </figcaption>
+          </figure>
+          <div class="summary-body">
+            <p class="lede">
+              I build <span class="hl-b">backend systems</span> that stay up, and I care about the ones that <span class="hl-w">protect the data inside them</span>.
+            </p>
+            <p class="body-copy">
+              Bilingual software developer (EN/ES), CS background, eight years of writing code — professionally supporting a production payments platform today. Happiest debugging real traffic, writing SQL that actually answers the question, and turning repeatable ops work into code. Currently going deep on <strong style="color:var(--fg)">security in programming with AI</strong> — protecting sensitive data against malicious attacks is only going to matter more.
+            </p>
+
+            <div class="motto">
+              <span class="quot">&ldquo;</span>
+              <div>
+                <strong>Don't feed mediocrity.</strong>
+                <span class="attr">— personal motto</span>
+              </div>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <div class="stat-n">8<span class="sm">yrs</span></div>
+                <div class="stat-k">Coding<br/>since 2018</div>
+              </div>
+              <div class="stat">
+                <div class="stat-n">1</div>
+                <div class="stat-k">Production payments<br/>platform supported</div>
+              </div>
+              <div class="stat">
+                <div class="stat-n">98<span class="sm">sites</span></div>
+                <div class="stat-k">Retail POS<br/>deployments</div>
+              </div>
+              <div class="stat">
+                <div class="stat-n">2</div>
+                <div class="stat-k">Fluent languages<br/>EN · ES</div>
+              </div>
+            </div>
+
+            <div class="loves">
+              <span class="loves-k">Go-to tech</span>
+              <div class="loves-items">
+                <span class="b">Python</span>
+                <span class="b">Swift / iOS</span>
+                <span class="b">Docker</span>
+                <span class="b">Proxmox</span>
+                <span class="b">LangChain</span>
+                <span class="b">Claude Code</span>
+              </div>
+            </div>
+
+            <div class="loves">
+              <span class="loves-k">Currently loving</span>
+              <div class="loves-items">
+                <span>Star Wars: Battlefront II</span>
+                <span>Self-hosting on TrueNAS</span>
+                <span>Unreal Engine tinkering</span>
+                <span>Streaming as elvischus</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 SKILLS -->
+  <section class="section" id="skills" data-screen-label="02 Skills">
+    <div class="sec-head rv">
+      <div class="sec-num">§ 02 / 06</div>
+      <h2 class="sec-title">Skills<span class="k">// stack</span></h2>
+    </div>
+    <div class="skills-grid rv">
+      <div></div>
+      <div>
+        <div class="skill-group">
+          <h3><span class="n">01</span>Languages</h3>
+          <div class="tags">
+            <span class="tag" data-hover>Python</span>
+            <span class="tag" data-hover>Java</span>
+            <span class="tag" data-hover>JavaScript</span>
+            <span class="tag" data-hover>C++</span>
+            <span class="tag" data-hover>C#</span>
+            <span class="tag" data-hover>Go</span>
+            <span class="tag" data-hover>Swift</span>
+            <span class="tag" data-hover>F#</span>
+            <span class="tag" data-hover>SQL</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3><span class="n">02</span>Frameworks &amp; AI</h3>
+          <div class="tags">
+            <span class="tag" data-hover>Flask</span>
+            <span class="tag" data-hover>Node.js</span>
+            <span class="tag" data-hover>Tkinter</span>
+            <span class="tag" data-hover>LangChain</span>
+            <span class="tag" data-hover>CrewAI</span>
+            <span class="tag" data-hover>Claude Code</span>
+            <span class="tag" data-hover>Unreal Engine</span>
+            <span class="tag" data-hover>HTML5 / CSS3 / JSON</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3><span class="n">03</span>Tools / Editors</h3>
+          <div class="tags">
+            <span class="tag" data-hover>Git / GitHub</span>
+            <span class="tag" data-hover>VS Code</span>
+            <span class="tag" data-hover>Cursor</span>
+            <span class="tag" data-hover>Visual Studio</span>
+            <span class="tag" data-hover>Notion</span>
+            <span class="tag" data-hover>Obsidian</span>
+            <span class="tag" data-hover>MySQL</span>
+            <span class="tag" data-hover>SQLite</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3><span class="n">04</span>Infra &amp; DevOps</h3>
+          <div class="tags">
+            <span class="tag" data-hover>Docker</span>
+            <span class="tag" data-hover>Proxmox</span>
+            <span class="tag" data-hover>TrueNAS</span>
+            <span class="tag" data-hover>Ubuntu Server</span>
+            <span class="tag" data-hover>Linux / macOS / Windows</span>
+            <span class="tag" data-hover>DHCP / DNS</span>
+            <span class="tag" data-hover>Active Directory</span>
+            <span class="tag" data-hover>Unit Testing</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3><span class="n">05</span>Platforms</h3>
+          <div class="tags">
+            <span class="tag" data-hover>Accepta EZPay</span>
+            <span class="tag" data-hover>Stripe</span>
+            <span class="tag" data-hover>Twitch / Kick / YouTube</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3><span class="n">06</span>Core CS</h3>
+          <div class="tags">
+            <span class="tag" data-hover>Data Structures</span>
+            <span class="tag" data-hover>Algorithms</span>
+            <span class="tag" data-hover>OOP</span>
+            <span class="tag" data-hover>System Design</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 EXPERIENCE -->
+  <section class="section" id="experience" data-screen-label="03 Experience">
+    <div class="sec-head rv">
+      <div class="sec-num" style="letter-spacing: 0.24px">§ 03 / 06</div>
+      <h2 class="sec-title">Experience<span class="k">// work</span></h2>
+    </div>
+    <div class="exp-grid rv">
+      <div></div>
+      <div class="timeline">
+        <article class="job">
+          <div class="job-date">May 2023 — Present <span class="chip">Current</span></div>
+          <h3 class="job-title">Digital Payments Support Specialist</h3>
+          <div class="job-company">Accepta Payments <span class="arr">→</span> San Juan, PR</div>
+          <ul>
+            <li>Provide high-level technical support for a complex payment platform, focused on backend stability and uptime.</li>
+            <li>Run SQL analysis to surface performance bottlenecks and feed improvement tickets back to engineering.</li>
+            <li>Key stakeholder in Change Management — review updates, coordinate deploys, minimize user impact.</li>
+            <li>Monitor infrastructure health and partner with developers to debug and resolve production issues.</li>
+          </ul>
+        </article>
+        <article class="job">
+          <div class="job-date">Oct 2021 — May 2023</div>
+          <h3 class="job-title">IT Assistant</h3>
+          <div class="job-company">All Ways 99 <span class="arr">→</span> Caguas, PR</div>
+          <ul>
+            <li>Configured POS hardware and software for 98 retail locations — imaging, networking, access points.</li>
+            <li>Automated repetitive setup routines, significantly reducing onboarding time for new hardware.</li>
+            <li>Provided remote and on-site technical assistance across warehouse and office operations.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PROJECTS -->
+  <section class="section" id="projects" data-screen-label="04 Projects">
+    <div class="sec-head rv">
+      <div class="sec-num">§ 04 / 06</div>
+      <h2 class="sec-title">Projects<span class="k">// selected work</span></h2>
+    </div>
+    <div class="proj-list rv" id="projList">
+      <a class="proj" href="https://github.com/EduardoTorresAlamo/Turn-Management-System" target="_blank" rel="noopener" data-hover>
+        <div class="proj-num">P/01</div>
+        <div>
+          <div class="proj-name">Turn Management System<span class="proj-hint">Queue mgmt · dual UI</span></div>
+        </div>
+        <div class="proj-blurb">Queue management app with two Python front-ends — a Flask web app and a Tkinter desktop GUI — with form validation for walk-ins and appointments.</div>
+        <div class="proj-stack"><span>Python</span><span>Flask</span><span>Tkinter</span></div>
+        <div class="proj-arrow">↗</div>
+      </a>
+      <a class="proj" href="https://github.com/EduardoTorresAlamo/Jangman-Project" target="_blank" rel="noopener" data-hover>
+        <div class="proj-num">P/02</div>
+        <div>
+          <div class="proj-name">Multiplayer Hangman<span class="proj-hint">Networking · sockets</span></div>
+        </div>
+        <div class="proj-blurb">Java client-server architecture for real-time multiplayer gameplay. Socket-based messaging, game state sync, turn handling.</div>
+        <div class="proj-stack"><span>Java</span><span>Sockets</span><span>Networking</span></div>
+        <div class="proj-arrow">↗</div>
+      </a>
+      <a class="proj" href="https://github.com/EduardoTorresAlamo/Freakymon.sql" target="_blank" rel="noopener" data-hover>
+        <div class="proj-num">P/03</div>
+        <div>
+          <div class="proj-name">Freakymon Database<span class="proj-hint">Schema · relational</span></div>
+        </div>
+        <div class="proj-blurb">Relational database in PL/SQL — Pokémon-inspired schema with table relationships, constraints, and sample data insertion.</div>
+        <div class="proj-stack"><span>PL/SQL</span><span>Database Design</span></div>
+        <div class="proj-arrow">↗</div>
+      </a>
+      <a class="proj" href="https://github.com/EduardoTorresAlamo/Clean-CSV-files" target="_blank" rel="noopener" data-hover>
+        <div class="proj-num">P/04</div>
+        <div>
+          <div class="proj-name">CSV Cleaner<span class="proj-hint">Automation · data prep</span></div>
+        </div>
+        <div class="proj-blurb">Python utility for cleaning and normalizing CSVs. Case normalization, custom field formatting — originally built to automate data prep at work.</div>
+        <div class="proj-stack"><span>Python</span><span>Automation</span></div>
+        <div class="proj-arrow">↗</div>
+      </a>
+      <a class="proj" href="https://github.com/EduardoTorresAlamo/dynamic-programming-java" target="_blank" rel="noopener" data-hover>
+        <div class="proj-num">P/05</div>
+        <div>
+          <div class="proj-name">Dynamic Programming<span class="proj-hint">Algorithms · Java</span></div>
+        </div>
+        <div class="proj-blurb">Java implementations of core DP patterns — memoization, tabulation, optimal substructure. Focus on clean code and algorithmic efficiency.</div>
+        <div class="proj-stack"><span>Java</span><span>Algorithms</span><span>DS</span></div>
+        <div class="proj-arrow">↗</div>
+      </a>
+    </div>
+    <div class="proj-foot rv">
+      <span>5 of 5 shown</span>
+      <a href="https://github.com/EduardoTorresAlamo" target="_blank" rel="noopener" data-hover>See all on GitHub ↗</a>
+    </div>
+  </section>
+
+  <!-- 05 EDUCATION & LANGUAGES -->
+  <section class="section" id="education" data-screen-label="05 Education">
+    <div class="sec-head rv">
+      <div class="sec-num">§ 05 / 06</div>
+      <h2 class="sec-title">Education<span class="k">// credentials</span></h2>
+    </div>
+    <div class="split-grid rv">
+      <div></div>
+      <div>
+        <div class="edu-item">
+          <div class="dates">2016 — May 2026 <span class="chip">Expected</span></div>
+          <h3>B.S. Computer Science</h3>
+          <p>Universidad de Puerto Rico · Bayamón, PR</p>
+        </div>
+        <div class="edu-item">
+          <div class="dates">2013 — 2015</div>
+          <h3>High School Diploma</h3>
+          <p>Esc. Voc. Antonio Fernos Isern · San Lorenzo, PR</p>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono); font-size:11px; color:var(--fg-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">Languages</div>
+        <div class="lang-row">
+          <span class="lang-name">Spanish</span>
+          <span class="lang-level">Native · Expert</span>
+          <div class="lang-bar" style="--w: 100%;"></div>
+        </div>
+        <div class="lang-row">
+          <span class="lang-name">English</span>
+          <span class="lang-level">Fluent</span>
+          <div class="lang-bar" style="--w: 92%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Currently block -->
+    <div class="currently rv">
+      <div class="kicker"><span class="dot"></span>Currently</div>
+      <div>
+        <p>Deep-diving into <strong style="color:var(--fg)">security in programming with AI</strong> — how systems get attacked, how models change the threat surface, and how to build with that in mind from day one.</p>
+        <p>Off the clock: I got into CS through a lifelong love of video games. Still the fastest way to explain why systems design fascinates me.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 CONTACT -->
+  <section class="section" id="contact" data-screen-label="06 Contact">
+    <div class="sec-head rv">
+      <div class="sec-num">§ 06 / 06</div>
+      <h2 class="sec-title">Contact<span class="k">// get in touch</span></h2>
+    </div>
+    <div class="contact-grid rv">
+      <div></div>
+      <div>
+        <div class="contact-lede">
+          Have a role, a question, or a project?<br/>
+          <span class="accent">Let's talk.</span>
+        </div>
+        <div class="contact-methods">
+          <div class="cm-row"><span class="cm-k">Email</span><a href="mailto:torreseduardo804@gmail.com" data-hover>torreseduardo804@gmail.com</a></div>
+          <div class="cm-row"><span class="cm-k">Phone</span><a href="tel:+19392670235" data-hover>+1 (939) 267-0235</a></div>
+          <div class="cm-row"><span class="cm-k">GitHub</span><a href="https://github.com/EduardoTorresAlamo" target="_blank" rel="noopener" data-hover>@EduardoTorresAlamo</a></div>
+          <div class="cm-row"><span class="cm-k">LinkedIn</span><a href="https://www.linkedin.com/in/eduardo-torres-787087221" target="_blank" rel="noopener" data-hover>eduardo-torres-pr</a></div>
+          <div class="cm-row"><span class="cm-k">Local</span><span>San Juan, PR · <span id="localTime">—</span></span></div>
+        </div>
+      </div>
+      <form class="form" id="contactForm" novalidate>
+        <div class="field" id="f-name">
+          <label for="in-name"><span>Name <span class="req">*</span></span><span class="err-msg"></span></label>
+          <input id="in-name" name="name" type="text" autocomplete="name" data-hover />
+        </div>
+        <div class="field" id="f-email">
+          <label for="in-email"><span>Email <span class="req">*</span></span><span class="err-msg"></span></label>
+          <input id="in-email" name="email" type="email" autocomplete="email" data-hover />
+        </div>
+        <div class="field" id="f-subject">
+          <label for="in-subject"><span>Subject</span><span class="err-msg"></span></label>
+          <input id="in-subject" name="subject" type="text" data-hover placeholder="Role · Project · Question" />
+        </div>
+        <div class="field" id="f-msg">
+          <label for="in-msg"><span>Message <span class="req">*</span></span><span class="err-msg"></span></label>
+          <textarea id="in-msg" name="message" rows="4" data-hover maxlength="600"></textarea>
+          <span class="char"><span id="charCount">0</span>/600</span>
+        </div>
+        <button type="submit" class="btn-submit" data-hover>
+          Send message <span>→</span>
+        </button>
+        <div class="form-status" id="formStatus" style="display:none"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="shell">
+    <div class="foot-grid rv">
+      <div>
+        <div class="foot-mono" style="margin-bottom:16px;">/ end of transmission</div>
+        <div class="foot-big">Let's<br/>build<span class="amp">.</span></div>
+      </div>
+      <div class="foot-mono">
+        © 2026 Eduardo Torres<br/>
+        Built with HTML, CSS & JS<br/>
+        San Juan, Puerto Rico
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
+        <div class="foot-mono">Connect</div>
+        <div class="foot-links">
+          <a href="mailto:torreseduardo804@gmail.com" data-hover>Email</a>
+          <a href="https://github.com/EduardoTorresAlamo" target="_blank" rel="noopener" data-hover>GitHub</a>
+          <a href="https://www.linkedin.com/in/eduardo-torres-787087221" target="_blank" rel="noopener" data-hover>LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Tweak panel -->
+<div class="tweaks-panel" id="tweaks">
+  <h4>Tweaks <button class="tw-toggle" id="tweaksClose" style="text-transform:none">close</button></h4>
+  <div class="tweak-row">
+    <label>Accent</label>
+    <div class="tweak-swatches" id="tweakAccent">
+      <div class="tw-sw" data-accent="blue"    style="background:oklch(0.58 0.22 255)"></div>
+      <div class="tw-sw" data-accent="emerald" style="background:oklch(0.62 0.18 160)"></div>
+      <div class="tw-sw" data-accent="orange"  style="background:oklch(0.65 0.19 55)"></div>
+      <div class="tw-sw" data-accent="violet"  style="background:oklch(0.58 0.22 300)"></div>
+      <div class="tw-sw" data-accent="red"     style="background:oklch(0.60 0.22 25)"></div>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label>Cursor</label>
+    <button class="tw-toggle" id="twCursor">on</button>
+  </div>
+  <div class="tweak-row">
+    <label>Density</label>
+    <button class="tw-toggle" id="twDensity">comfy</button>
+  </div>
+  <div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--rule); color:var(--fg-3); font-size:10px; text-transform:uppercase; letter-spacing:0.08em;">
+    press <kbd>T</kbd> to toggle · <kbd>D</kbd> for dark
+  </div>
+</div>
+
+<script>
+/* ========= TWEAKABLE DEFAULTS ========= */
+const TWEAKS = {
+  "theme": "dark",
+  "accent": "blue",
+  "cursor": true,
+  "density": "comfy"
+};
+
+const ACCENTS = {
+  blue:    { light: "oklch(0.58 0.22 255)", dark: "oklch(0.72 0.18 245)" },
+  emerald: { light: "oklch(0.52 0.16 160)", dark: "oklch(0.72 0.15 160)" },
+  orange:  { light: "oklch(0.60 0.19 55)",  dark: "oklch(0.75 0.15 60)"  },
+  violet:  { light: "oklch(0.55 0.22 300)", dark: "oklch(0.72 0.17 295)" },
+  red:     { light: "oklch(0.58 0.22 25)",  dark: "oklch(0.72 0.18 25)"  },
+};
+
+/* ========= Custom Cursor ========= */
+const cDot = document.getElementById('cursorDot');
+const cRing = document.getElementById('cursorRing');
+let mx = window.innerWidth/2, my = window.innerHeight/2;
+let rx = mx, ry = my;
+window.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cDot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+});
+function loop() {
+  rx += (mx - rx) * 0.18;
+  ry += (my - ry) * 0.18;
+  cRing.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+  requestAnimationFrame(loop);
+}
+loop();
+document.addEventListener('mouseleave', () => { cDot.style.opacity = 0; cRing.style.opacity = 0; });
+document.addEventListener('mouseenter', () => { cDot.style.opacity = 1; cRing.style.opacity = 1; });
+document.querySelectorAll('[data-hover]').forEach(el => {
+  el.addEventListener('mouseenter', () => cRing.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cRing.classList.remove('hover'));
+});
+
+/* ========= Theme ========= */
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeLabel').textContent = t.toUpperCase();
+  applyAccent(TWEAKS.accent);
+  TWEAKS.theme = t;
+  try { localStorage.setItem('et-theme', t); } catch(e){}
+}
+function applyAccent(k) {
+  const t = document.documentElement.getAttribute('data-theme');
+  const c = ACCENTS[k][t];
+  document.documentElement.style.setProperty('--accent', c);
+  document.documentElement.style.setProperty('--accent-soft', c.replace(')', ' / 0.12)'));
+  document.querySelectorAll('.tw-sw').forEach(s => s.classList.toggle('active', s.dataset.accent === k));
+  TWEAKS.accent = k;
+  try { localStorage.setItem('et-accent', k); } catch(e){}
+}
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  applyTheme(cur === 'light' ? 'dark' : 'light');
+});
+
+/* Init from storage or defaults */
+try {
+  const savedTheme = localStorage.getItem('et-theme');
+  const savedAccent = localStorage.getItem('et-accent');
+  applyTheme(savedTheme || TWEAKS.theme);
+  applyAccent(savedAccent || TWEAKS.accent);
+} catch(e) {
+  applyTheme(TWEAKS.theme);
+  applyAccent(TWEAKS.accent);
+}
+
+/* ========= Reveal on scroll ========= */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ========= Active section nav ========= */
+const sections = document.querySelectorAll('section.section');
+const navLinks = document.querySelectorAll('#navLinks a');
+const scrollIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(a => a.classList.toggle('active', a.dataset.sec === id));
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+sections.forEach(s => scrollIO.observe(s));
+
+/* ========= Scroll progress ========= */
+const progress = document.getElementById('progress');
+function updateProgress() {
+  const h = document.documentElement;
+  const scrolled = h.scrollTop;
+  const total = h.scrollHeight - h.clientHeight;
+  const p = total > 0 ? (scrolled / total) * 100 : 0;
+  progress.style.setProperty('--p', p + '%');
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+updateProgress();
+
+/* ========= Local time ========= */
+function tick() {
+  const el = document.getElementById('localTime');
+  if (!el) return;
+  const d = new Date();
+  const opts = { timeZone: 'America/Puerto_Rico', hour: '2-digit', minute: '2-digit', hour12: false };
+  el.textContent = d.toLocaleTimeString('en-US', opts) + ' AST';
+}
+tick(); setInterval(tick, 30000);
+
+/* ========= Contact form ========= */
+const form = document.getElementById('contactForm');
+const charCountEl = document.getElementById('charCount');
+const msgEl = document.getElementById('in-msg');
+msgEl.addEventListener('input', () => charCountEl.textContent = msgEl.value.length);
+
+function setErr(id, msg) {
+  const f = document.getElementById(id);
+  f.classList.toggle('error', !!msg);
+  f.querySelector('.err-msg').textContent = msg || '';
+}
+function validEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(form));
+  let ok = true;
+  setErr('f-name', !data.name.trim() ? 'required' : '');
+  setErr('f-email', !data.email.trim() ? 'required' : (!validEmail(data.email) ? 'invalid email' : ''));
+  setErr('f-msg', !data.message.trim() ? 'required' : '');
+  if (!data.name.trim() || !data.email.trim() || !validEmail(data.email) || !data.message.trim()) ok = false;
+  if (!ok) return;
+
+  const btn = form.querySelector('.btn-submit');
+  const status = document.getElementById('formStatus');
+  btn.disabled = true;
+  btn.innerHTML = 'Sending... <span class="mono">[...]</span>';
+  await new Promise(r => setTimeout(r, 900));
+  btn.innerHTML = 'Sent <span>✓</span>';
+  status.className = 'form-status ok';
+  status.innerHTML = `<span class="stt-dot"></span>Thanks, ${data.name.split(' ')[0]} — I'll get back to you at ${data.email}.`;
+  status.style.display = 'flex';
+  form.reset();
+  charCountEl.textContent = '0';
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = 'Send message <span>→</span>';
+  }, 2400);
+});
+
+/* ========= Tweak panel ========= */
+const tweakPanel = document.getElementById('tweaks');
+
+document.getElementById('tweaksClose').addEventListener('click', () => tweakPanel.classList.remove('on'));
+
+document.getElementById('tweakAccent').addEventListener('click', (e) => {
+  const sw = e.target.closest('[data-accent]');
+  if (!sw) return;
+  applyAccent(sw.dataset.accent);
+});
+
+const twCursor = document.getElementById('twCursor');
+twCursor.textContent = TWEAKS.cursor ? 'on' : 'off';
+twCursor.addEventListener('click', () => {
+  TWEAKS.cursor = !TWEAKS.cursor;
+  twCursor.textContent = TWEAKS.cursor ? 'on' : 'off';
+  document.body.style.cursor = TWEAKS.cursor ? 'none' : 'auto';
+  cDot.style.display = TWEAKS.cursor ? 'block' : 'none';
+  cRing.style.display = TWEAKS.cursor ? 'block' : 'none';
+  document.querySelectorAll('a, button, input, textarea, label').forEach(el => {
+    el.style.cursor = TWEAKS.cursor ? 'none' : '';
+  });
+});
+
+const twDensity = document.getElementById('twDensity');
+twDensity.textContent = TWEAKS.density;
+twDensity.addEventListener('click', () => {
+  TWEAKS.density = TWEAKS.density === 'comfy' ? 'dense' : 'comfy';
+  twDensity.textContent = TWEAKS.density;
+  document.documentElement.style.setProperty('--density-scale', TWEAKS.density === 'dense' ? '0.85' : '1');
+  document.querySelectorAll('.section').forEach(s => s.style.paddingBlock = TWEAKS.density === 'dense' ? '64px' : '96px');
+});
+
+/* Keyboard shortcuts */
+window.addEventListener('keydown', (e) => {
+  if (e.target.matches('input, textarea')) return;
+  if (e.key === 't' || e.key === 'T') tweakPanel.classList.toggle('on');
+  if (e.key === 'd' || e.key === 'D') {
+    const cur = document.documentElement.getAttribute('data-theme');
+    applyTheme(cur === 'light' ? 'dark' : 'light');
+  }
+});
+</script>
+
+</body>
 </html>
