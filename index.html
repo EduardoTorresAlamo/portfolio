@@ -1593,17 +1593,43 @@ form.addEventListener('submit', async (e) => {
   const status = document.getElementById('formStatus');
   btn.disabled = true;
   btn.innerHTML = 'Sending... <span class="mono">[...]</span>';
-  await new Promise(r => setTimeout(r, 900));
-  btn.innerHTML = 'Sent <span>✓</span>';
-  status.className = 'form-status ok';
-  status.innerHTML = `<span class="stt-dot"></span>Thanks, ${data.name.split(' ')[0]} — I'll get back to you at ${data.email}.`;
-  status.style.display = 'flex';
-  form.reset();
-  charCountEl.textContent = '0';
-  setTimeout(() => {
+
+  try {
+    const res = await fetch('https://formspree.io/f/xojbwgzz', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        subject: data.subject || 'Portfolio contact',
+        message: data.message
+      })
+    });
+
+    if (res.ok) {
+      btn.innerHTML = 'Sent <span>✓</span>';
+      status.className = 'form-status ok';
+      status.innerHTML = `<span class="stt-dot"></span>Thanks, ${data.name.split(' ')[0]}. I'll get back to you at ${data.email}.`;
+      status.style.display = 'flex';
+      form.reset();
+      charCountEl.textContent = '0';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = 'Send message <span>→</span>';
+      }, 2400);
+    } else {
+      const json = await res.json();
+      throw new Error(json.error || 'Send failed');
+    }
+  } catch (err) {
     btn.disabled = false;
     btn.innerHTML = 'Send message <span>→</span>';
-  }, 2400);
+    status.className = 'form-status';
+    status.style.borderColor = 'oklch(0.60 0.20 25)';
+    status.style.color = 'oklch(0.55 0.18 25)';
+    status.innerHTML = `<span class="stt-dot"></span>Something went wrong. Email me directly at torreseduardo804@gmail.com`;
+    status.style.display = 'flex';
+  }
 });
 
 /* ========= Tweak panel ========= */
