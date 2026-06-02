@@ -3,11 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Eduardo Torres — Software Developer</title>
+<!-- Hyphen used intentionally: em dashes are never used in this file -->
+<title>Eduardo Torres - Software Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
+
+  /* ===== Design Tokens (CSS Custom Properties) ===== */
+  /* All color values are in OKLCH for perceptual uniformity.
+     --bg / --bg-2   page background and slightly elevated surface (cards, nav panels)
+     --fg / --fg-2 / --fg-3   primary text down to tertiary/muted labels
+     --rule / --rule-2   dividing lines; rule-2 is slightly darker for borders
+     --accent / --accent-soft   brand color and its low-opacity tint
+     --warm / --warm-soft / --warm-bg   secondary warm-tone accent (stats, portrait frame)
+     --mono / --sans   font stacks for monospace and proportional text              */
   :root {
     --bg: oklch(0.975 0.005 85);
     --bg-2: oklch(0.955 0.006 85);
@@ -24,6 +34,11 @@
     --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
     --sans: 'Inter', system-ui, -apple-system, sans-serif;
   }
+
+  /* ===== Dark Theme Overrides ===== */
+  /* Applied via data-theme="dark" on <html>; JS toggles this attribute.
+     Lightness values are inverted relative to light theme.
+     Accent chroma is reduced slightly (0.22 -> 0.18) to avoid glare on dark bg. */
   [data-theme="dark"] {
     --bg: oklch(0.16 0.005 60);
     --bg-2: oklch(0.20 0.006 60);
@@ -38,6 +53,11 @@
     --warm-soft: oklch(0.78 0.14 75 / 0.15);
     --warm-bg: oklch(0.22 0.02 70);
   }
+
+  /* ===== Global Reset and Base Styles ===== */
+  /* box-sizing border-box on everything avoids width-overflow surprises.
+     cursor:none hides the OS pointer; a custom SVG cursor is driven by JS.
+     font-feature-settings enables Inter's alternate numerals and stylistic sets. */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; scroll-padding-top: 96px; }
   body {
@@ -51,6 +71,7 @@
     transition: background 280ms ease, color 280ms ease;
     cursor: none;
   }
+  /* Restore native cursor and hide JS cursor elements on touch-only devices */
   @media (hover: none) { body { cursor: auto; } .cursor-dot, .cursor-ring { display: none; } }
   a, button, input, textarea, label { cursor: none; font-family: inherit; color: inherit; }
   @media (hover: none) { a, button, input, textarea, label { cursor: auto; } }
@@ -59,7 +80,11 @@
   .mono { font-family: var(--mono); font-feature-settings: "zero", "ss01"; }
   .num { font-variant-numeric: tabular-nums; }
 
-  /* ===== Cursor ===== */
+  /* ===== Custom Cursor ===== */
+  /* Two-layer cursor: a small filled dot that tracks the mouse exactly,
+     and a larger ring that lags behind with lerp (implemented in JS).
+     mix-blend-mode:difference makes both visible on any background color.
+     transform: translate(-50%,-50%) centers each element on the mouse coordinate. */
   .cursor-dot, .cursor-ring {
     position: fixed;
     top: 0; left: 0;
@@ -78,16 +103,23 @@
     border: 1px solid #fff;
     transition: width 180ms ease, height 180ms ease, background 180ms ease, border-color 180ms ease;
   }
+  /* Ring expands and gains a subtle fill when hovering interactive elements */
   .cursor-ring.hover {
     width: 56px; height: 56px;
     background: rgba(255,255,255,0.08);
   }
 
-  /* ===== Layout ===== */
+  /* ===== Layout Shell ===== */
+  /* .shell constrains content width and provides consistent horizontal padding.
+     padding shrinks on narrow viewports to avoid edge-clipping. */
   .shell { max-width: 1440px; margin: 0 auto; padding: 0 56px; }
   @media (max-width: 900px) { .shell { padding: 0 24px; } }
 
-  /* ===== Top bar ===== */
+  /* ===== Top Navigation Bar ===== */
+  /* Fixed topbar with frosted-glass backdrop.
+     backdrop-filter blur + saturate creates the glass effect.
+     color-mix blends --bg at 75% opacity so content behind shows through.
+     z-index:40 keeps it above page content but below the cursor (z:9999). */
   .topbar {
     position: fixed; top: 0; left: 0; right: 0;
     z-index: 40;
@@ -105,6 +137,8 @@
     gap: 24px;
   }
   .brand { display: flex; align-items: center; gap: 12px; }
+  /* Avatar circle: shows photo via background-image; background-position centers
+     the face at 22% from the top to avoid cropping the forehead. */
   .avatar {
     width: 32px; height: 32px; border-radius: 999px;
     background: var(--fg);
@@ -121,6 +155,7 @@
     background-position: center 22%;
     color: transparent;
   }
+  /* Inset ring overlay to give the avatar a subtle border that respects themes */
   .avatar::after {
     content: '';
     position: absolute; inset: 0;
@@ -136,6 +171,7 @@
   }
   .brand-name .dim { color: var(--fg-3); font-weight: 400; }
 
+  /* Desktop nav links - hidden below 900px; hamburger takes over at that breakpoint */
   .nav-links {
     display: none;
     gap: 4px;
@@ -153,10 +189,12 @@
   }
   .nav-links a .nv-num { color: var(--fg-3); font-size: 10px; }
   .nav-links a:hover { color: var(--fg); }
+  /* Active state set via IntersectionObserver in JS as user scrolls */
   .nav-links a.active { color: var(--fg); background: var(--bg-2); }
   .nav-links a.active .nv-num { color: var(--accent); }
 
   .top-actions { display: flex; align-items: center; gap: 8px; }
+  /* Pill-shaped theme toggle button */
   .theme-toggle {
     display: inline-flex; align-items: center; gap: 8px;
     padding: 7px 12px;
@@ -174,6 +212,7 @@
     background: var(--fg);
     transition: background 180ms ease;
   }
+  /* "Hire me" CTA in topbar - hidden on very narrow viewports */
   .cta-top {
     display: none;
     text-decoration: none;
@@ -190,7 +229,12 @@
   .cta-top .arr { transition: transform 180ms ease; }
   .cta-top:hover .arr { transform: translateX(3px); }
 
-  /* ===== Hamburger button ===== */
+  /* ===== Hamburger Button ===== */
+  /* Three-bar icon button shown only on mobile viewports.
+     CSS transforms animate the bars into an X when .open is active.
+     Bar 1: slides down and rotates 45deg
+     Bar 2: fades out and collapses via scaleX
+     Bar 3: slides up and rotates -45deg                               */
   .menu-btn {
     display: none;
     flex-direction: column;
@@ -214,11 +258,16 @@
     transition: transform 240ms ease, opacity 240ms ease;
     transform-origin: center;
   }
+  /* X animation: translate along Y (half of total gap * 2 bars) then rotate */
   .menu-btn.open .bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
   .menu-btn.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
   .menu-btn.open .bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-  /* ===== Mobile nav panel ===== */
+  /* ===== Mobile Navigation Panel ===== */
+  /* Slides down from below the topbar on small screens; frosted glass like the bar.
+     pointer-events:none while closed prevents ghost clicks on hidden links.
+     top:64px aligns panel flush below the 64px-tall topbar.
+     Opacity + translateY transition creates the slide-in effect without layout shift. */
   .mobile-nav {
     display: none;
     position: fixed;
@@ -252,7 +301,10 @@
   .mobile-nav a .mn-num { color: var(--fg-3); font-size: 10px; min-width: 18px; }
   .mobile-nav a.active .mn-num { color: var(--accent); }
 
-  /* ===== Section scaffolding ===== */
+  /* ===== Section Scaffolding ===== */
+  /* Each section uses 96px vertical padding and a top border rule as a divider.
+     .sec-head uses a two-column grid: narrow left column for the section number,
+     wider right column for the heading. This creates consistent horizontal rhythm. */
   section, header.hero { position: relative; }
   .section {
     padding: 96px 0;
@@ -273,6 +325,7 @@
     color: var(--fg-3);
     letter-spacing: 0.02em;
   }
+  /* clamp() scales heading size fluidly between a minimum and maximum */
   .sec-title {
     font-size: clamp(28px, 3.4vw, 44px);
     font-weight: 600;
@@ -281,7 +334,10 @@
   }
   .sec-title .k { color: var(--fg-3); font-weight: 400; font-family: var(--mono); font-size: 0.55em; margin-left: 14px; letter-spacing: 0; vertical-align: middle; }
 
-  /* ===== HERO ===== */
+  /* ===== Hero Section ===== */
+  /* Full-viewport height with flex column; content anchored to bottom of viewport.
+     Hero grid is two unequal columns: wide left for name/role/CTAs,
+     narrower right for the quick-facts aside. Collapses to single column on mobile. */
   .hero {
     min-height: 100vh;
     padding: 136px 0 80px;
@@ -293,6 +349,7 @@
     font-family: var(--mono); font-size: 12px; color: var(--fg-3);
     flex-wrap: wrap;
   }
+  /* Pulsing green dot signals live availability status */
   .hero-meta .dot-live {
     display: inline-block; width: 7px; height: 7px; border-radius: 999px;
     background: oklch(0.70 0.18 145); margin-right: 8px;
@@ -307,6 +364,7 @@
     align-items: end;
   }
   @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; gap: 48px; } }
+  /* clamp() scales the display name from 52px on mobile to 140px at wide viewport */
   .hero-name {
     font-size: clamp(52px, 9vw, 140px);
     font-weight: 600;
@@ -324,8 +382,10 @@
     max-width: 36ch;
     line-height: 1.5;
   }
+  /* .hl highlights key stack terms with a soft accent background tint */
   .hero-role .hl { color: var(--fg); background: var(--accent-soft); padding: 2px 6px; border-radius: 3px; }
 
+  /* Quick-facts aside: left border acts as a visual separator from the name block */
   .facts {
     display: flex; flex-direction: column; gap: 4px;
     border-left: 1px solid var(--rule);
@@ -345,6 +405,9 @@
   .fact-k { color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; font-size: 10px; }
   .fact-v { color: var(--fg); }
 
+  /* ===== Hero CTA Row ===== */
+  /* Flex row with wrapping so buttons reflow gracefully on narrow viewports.
+     .primary variant inverts colors (dark button on light bg, light button on dark). */
   .ctas {
     display: flex; flex-wrap: wrap;
     gap: 28px;
@@ -360,6 +423,7 @@
     border-bottom: 1px solid var(--fg);
     transition: color 180ms ease, border-color 180ms ease, gap 180ms ease;
   }
+  /* gap transition widens the space between label and arrow icon on hover */
   .cta-link:hover { color: var(--accent); border-color: var(--accent); gap: 14px; }
   .cta-link.primary {
     background: var(--fg);
@@ -371,7 +435,9 @@
   .cta-link.primary:hover { background: var(--accent); color: #fff; }
   .cta-sep { color: var(--fg-3); }
 
-  /* ===== Summary ===== */
+  /* ===== Summary Section ===== */
+  /* Two-level grid: outer grid offsets content past the 120px section-number column;
+     inner grid places portrait photo beside the text body.                          */
   .summary-wrap {
     display: grid;
     grid-template-columns: 120px minmax(0, 1fr);
@@ -386,6 +452,7 @@
   }
   @media (max-width: 900px) { .summary-inner { grid-template-columns: 1fr; gap: 32px; } }
 
+  /* Portrait photo frame: 4:5 aspect ratio; ::before adds an inset decorative border */
   .portrait {
     position: relative;
     aspect-ratio: 4 / 5;
@@ -394,6 +461,7 @@
     display: grid; place-items: center;
     overflow: hidden;
   }
+  /* Inset decorative frame: uses warm accent color to complement the photo tones */
   .portrait::before {
     content: '';
     position: absolute; inset: 12px;
@@ -401,6 +469,7 @@
     pointer-events: none;
   }
   .portrait-label { display: none; }
+  /* Caption strip overlaid at bottom of photo; text-shadow improves legibility */
   .portrait-caption {
     position: absolute;
     bottom: 10px; left: 10px; right: 10px;
@@ -413,6 +482,7 @@
     text-shadow: 0 1px 4px rgba(0,0,0,0.6);
   }
 
+  /* lede: large opening statement; .hl-b uses accent color, .hl-w uses warm underline */
   .summary-body p.lede {
     font-size: clamp(20px, 2.2vw, 28px);
     line-height: 1.35;
@@ -422,6 +492,7 @@
     max-width: 22ch;
   }
   .summary-body p.lede .hl-b { color: var(--accent); }
+  /* Linear gradient simulates a warm underline highlight by coloring only the bottom 35% */
   .summary-body p.lede .hl-w {
     background: linear-gradient(180deg, transparent 65%, var(--warm-soft) 65%);
     padding: 0 2px;
@@ -435,6 +506,9 @@
     line-height: 1.6;
   }
 
+  /* ===== Motto Blockquote ===== */
+  /* Left border + warm background tint creates a pull-quote style block.
+     .quot holds the large decorative opening quotation mark character. */
   .motto {
     margin-top: 32px;
     padding: 20px 24px;
@@ -465,6 +539,10 @@
     margin-top: 8px;
   }
 
+  /* ===== Stats Grid ===== */
+  /* Four equal columns; collapses to 2x2 grid on narrow viewports.
+     Border rules create a subtle table-like structure without backgrounds.
+     stat-n uses warm color for numeric emphasis; stat-k is subdued label text. */
   .stats {
     margin-top: 40px;
     display: grid;
@@ -479,6 +557,7 @@
     padding-right: 16px;
   }
   .stat:last-child { border-right: 0; }
+  /* On mobile 2-column layout: remove right border from col 2 and add bottom to row 1 */
   @media (max-width: 700px) {
     .stat:nth-child(2) { border-right: 0; }
     .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--rule); }
@@ -505,6 +584,9 @@
     line-height: 1.4;
   }
 
+  /* ===== Tech / Interests Tag Clouds ===== */
+  /* Two-column layout: narrow left label, flexible right tag list.
+     ::before pseudo-element on each span renders a colored bullet dot. */
   .loves {
     margin-top: 36px;
     display: grid;
@@ -533,6 +615,7 @@
     align-items: center;
     gap: 8px;
   }
+  /* Default bullet uses warm accent; .b class overrides to the brand accent color */
   .loves-items span::before {
     content: '';
     width: 6px; height: 6px;
@@ -542,7 +625,10 @@
   }
   .loves-items span.b::before { background: var(--accent); }
 
-  /* ===== Skills ===== */
+  /* ===== Skills Section ===== */
+  /* Outer grid mirrors the 120px offset pattern.
+     Each skill-group is a two-column row: category label on left, tag cloud on right.
+     ::after on .tag renders a centered dot separator between tags. */
   .skills-grid {
     display: grid;
     grid-template-columns: 120px 1fr;
@@ -586,6 +672,7 @@
     transition: color 180ms ease;
   }
   .tag:hover { color: var(--accent); }
+  /* Decorative dot separator after each tag; hidden on the last tag */
   .tag::after {
     content: '·';
     margin-left: 12px;
@@ -593,7 +680,10 @@
   }
   .tag:last-child::after { display: none; }
 
-  /* ===== Experience ===== */
+  /* ===== Experience / Timeline ===== */
+  /* .timeline::before draws a 1px vertical line on the left.
+     Each .job has a ::before circle positioned on top of that line to form
+     a timeline node. On hover the node fills with accent color. */
   .exp-grid {
     display: grid;
     grid-template-columns: 120px 1fr;
@@ -615,6 +705,7 @@
     padding-bottom: 48px;
   }
   .job:last-child { padding-bottom: 0; }
+  /* Timeline node: small circle aligned with the vertical rule at left:1px */
   .job::before {
     content: '';
     position: absolute;
@@ -657,6 +748,7 @@
   }
   .job-company .arr { color: var(--fg-3); margin: 0 6px; }
   .job ul { list-style: none; display: flex; flex-direction: column; gap: 10px; max-width: 60ch; }
+  /* Each bullet uses a positioned arrow character instead of the default list-style */
   .job ul li {
     position: relative;
     padding-left: 24px;
@@ -672,7 +764,10 @@
     font-family: var(--mono);
   }
 
-  /* ===== Projects ===== */
+  /* ===== Projects List ===== */
+  /* Each project row is a 5-column grid: number, name+hint, blurb, stack, arrow icon.
+     On hover: padding expands left/right and a ::after pseudo-element fills the background.
+     z-index:-1 on ::after keeps it behind the text content.                              */
   .proj-list {
     border-top: 1px solid var(--rule);
   }
@@ -688,10 +783,12 @@
     position: relative;
     transition: padding 220ms ease;
   }
+  /* On mobile: collapse to 3 columns; blurb and stack span the middle column */
   @media (max-width: 900px) {
     .proj { grid-template-columns: 80px 1fr 40px; row-gap: 8px; }
     .proj-stack, .proj-blurb { grid-column: 2 / 3; }
   }
+  /* Hover background fill: height animates from 0 to 100% for a sweep effect */
   .proj::after {
     content: '';
     position: absolute;
@@ -736,6 +833,7 @@
     color: var(--fg-2);
     display: flex; flex-wrap: wrap; gap: 4px 10px;
   }
+  /* Slash separator between stack tags via CSS content injection */
   .proj-stack span + span::before { content: '/ '; color: var(--fg-3); margin-right: 4px; }
   .proj-arrow {
     font-family: var(--mono);
@@ -744,6 +842,7 @@
     justify-self: end;
     transition: transform 220ms ease, color 220ms ease;
   }
+  /* Arrow moves diagonally up-right on hover to suggest external link */
   .proj:hover .proj-arrow { transform: translate(4px, -4px); color: var(--accent); }
   .proj-foot {
     display: flex; justify-content: space-between; align-items: center;
@@ -760,7 +859,9 @@
   }
   .proj-foot a:hover { color: var(--accent); border-color: var(--accent); }
 
-  /* ===== Education + Languages + Currently ===== */
+  /* ===== Education + Languages ===== */
+  /* Three-column layout: offset column, education column, languages column.
+     .edu-item has a top border; last item also gets a bottom border to close the list. */
   .split-grid {
     display: grid;
     grid-template-columns: 120px 1fr 1fr;
@@ -784,6 +885,8 @@
   .edu-item h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 4px; }
   .edu-item p { font-family: var(--mono); font-size: 12px; color: var(--fg-2); }
 
+  /* Language proficiency rows: name on left, level label on right.
+     .lang-bar::after uses the --w CSS variable to set bar fill width. */
   .lang-row {
     padding: 20px 0;
     border-top: 1px solid var(--rule);
@@ -795,6 +898,7 @@
   .lang-row:last-child { border-bottom: 1px solid var(--rule); }
   .lang-name { font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
   .lang-level { font-family: var(--mono); font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.08em; }
+  /* Proficiency bar: spans full width (grid-column: 1 / -1); ::after fills to --w */
   .lang-bar { grid-column: 1 / -1; height: 2px; background: var(--rule); position: relative; overflow: hidden; margin-top: 8px; }
   .lang-bar::after {
     content: ''; position: absolute; top: 0; left: 0; bottom: 0;
@@ -802,7 +906,9 @@
     width: var(--w, 100%);
   }
 
-  /* ===== Currently block ===== */
+  /* ===== "Currently" Status Block ===== */
+  /* Callout box with a pulsing accent dot to signal an active/live status item.
+     Placed at the end of the Education section as a personal note.             */
   .currently {
     background: var(--bg-2);
     padding: 40px;
@@ -830,7 +936,9 @@
   .currently p { font-size: 17px; color: var(--fg); line-height: 1.55; letter-spacing: -0.01em; max-width: 54ch; }
   .currently p + p { margin-top: 12px; color: var(--fg-2); font-size: 15px; }
 
-  /* ===== Contact ===== */
+  /* ===== Contact Section ===== */
+  /* Three columns: offset, contact info + methods, contact form.
+     On mobile both columns stack vertically.                      */
   .contact-grid {
     display: grid;
     grid-template-columns: 120px 1fr 1fr;
@@ -845,6 +953,7 @@
     max-width: 20ch;
   }
   .contact-lede .accent { color: var(--accent); }
+  /* Contact methods list using a two-column key/value grid per row */
   .contact-methods {
     margin-top: 24px;
     display: flex; flex-direction: column; gap: 2px;
@@ -859,6 +968,10 @@
   .cm-row a { color: var(--fg); text-decoration: none; transition: color 180ms ease; }
   .cm-row a:hover { color: var(--accent); }
 
+  /* ===== Contact Form ===== */
+  /* Minimal underline-style inputs: no visible box, only a bottom border.
+     .field wraps each input + label + error message as a unit.
+     .field.error turns the bottom border red to signal validation failure. */
   .form { display: flex; flex-direction: column; gap: 20px; }
   .field { display: flex; flex-direction: column; gap: 6px; position: relative; }
   .field label {
@@ -884,6 +997,7 @@
   }
   .field textarea { min-height: 100px; }
   .field input:focus, .field textarea:focus { border-color: var(--fg); }
+  /* oklch(0.62 0.22 25) = red in the OKLCH color space */
   .field.error input, .field.error textarea { border-color: oklch(0.62 0.22 25); }
   .field .err-msg {
     font-family: var(--mono);
@@ -892,6 +1006,7 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
+  /* Character counter overlaid at bottom-right corner of the textarea */
   .field .char {
     position: absolute; right: 0; bottom: 12px;
     font-family: var(--mono);
@@ -914,6 +1029,7 @@
   }
   .btn-submit:hover:not(:disabled) { background: var(--accent); color: #fff; }
   .btn-submit:disabled { opacity: 0.55; }
+  /* Status banner shown after form submit; .ok variant uses green border/text */
   .form-status {
     font-family: var(--mono);
     font-size: 11px;
@@ -928,6 +1044,8 @@
   .form-status .stt-dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
 
   /* ===== Footer ===== */
+  /* Three-column layout: large display name, copyright blurb, social links.
+     foot-big mirrors the hero name scale for visual bookend symmetry.       */
   .footer {
     border-top: 1px solid var(--rule);
     padding: 48px 0 32px;
@@ -946,11 +1064,17 @@
   .foot-links a { color: var(--fg-2); text-decoration: none; transition: color 180ms ease; }
   .foot-links a:hover { color: var(--accent); }
 
-  /* ===== Reveal ===== */
+  /* ===== Scroll Reveal ===== */
+  /* Elements with .rv start invisible and slightly translated down.
+     IntersectionObserver adds .in when they enter the viewport, triggering the transition.
+     unobserve() is called after the first reveal to avoid unnecessary callbacks.         */
   .rv { opacity: 0; transform: translateY(18px); transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
   .rv.in { opacity: 1; transform: translateY(0); }
 
-  /* ===== Scroll progress ===== */
+  /* ===== Scroll Progress Bar ===== */
+  /* 1px tall bar fixed just below the topbar (top: 63px = 64px topbar - 1px border).
+     ::after pseudo-element width is driven by --p CSS variable updated in JS on scroll.
+     Separate z-index (41) places it above the topbar border.                           */
   .progress {
     position: fixed; left: 0; right: 0; top: 63px;
     height: 1px; background: transparent;
@@ -963,7 +1087,10 @@
     transition: width 80ms linear;
   }
 
-  /* ===== Tweak panel ===== */
+  /* ===== Tweak Panel ===== */
+  /* Fixed bottom-right panel for real-time customization (accent color, cursor, density).
+     Hidden by default; toggled via keyboard shortcut T or JS.
+     box-shadow uses an oklch alpha value for consistent shadow across color spaces.     */
   .tweaks-panel {
     position: fixed; bottom: 20px; right: 20px;
     z-index: 60;
@@ -981,13 +1108,14 @@
   .tweak-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-top: 1px solid var(--rule); }
   .tweak-row label { color: var(--fg-2); }
   .tweak-swatches { display: flex; gap: 6px; }
+  /* Color swatch circles; .active shows a focus ring to indicate current selection */
   .tw-sw { width: 18px; height: 18px; border-radius: 999px; border: 1px solid var(--rule-2); cursor: pointer; transition: transform 150ms ease; }
   .tw-sw:hover { transform: scale(1.15); }
   .tw-sw.active { outline: 2px solid var(--fg); outline-offset: 2px; }
   .tw-toggle { background: var(--bg-2); border: 1px solid var(--rule-2); padding: 4px 10px; font-family: inherit; font-size: 10px; color: var(--fg); text-transform: uppercase; letter-spacing: 0.08em; border-radius: 2px; }
   .tw-toggle:hover { border-color: var(--fg-2); }
 
-  /* Keyboard hint */
+  /* ===== Keyboard Hint Badge ===== */
   kbd {
     font-family: var(--mono);
     font-size: 10px;
@@ -998,6 +1126,9 @@
     color: var(--fg-2);
   }
 
+  /* ===== Reduced Motion ===== */
+  /* Disable all animations and transitions for users who prefer reduced motion.
+     Scroll-reveal elements are set to fully visible so content is never hidden. */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .rv { opacity: 1; transform: none; }
@@ -1006,18 +1137,24 @@
 </head>
 <body>
 
+<!-- ===== Custom Cursor Elements ===== -->
+<!-- Positioned by JS mousemove; hidden on touch devices via CSS media query -->
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
+<!-- ===== Scroll Progress Bar ===== -->
+<!-- ::after width driven by --p CSS variable; updated on scroll via JS -->
 <div class="progress" id="progress"></div>
 
-<!-- TOP BAR -->
+<!-- ===== TOP NAVIGATION BAR ===== -->
+<!-- Fixed topbar with frosted-glass backdrop and section anchor links -->
 <nav class="topbar">
   <div class="shell topbar-inner">
     <a href="#top" class="brand" data-hover>
       <div class="avatar" aria-hidden="true">ET</div>
       <div class="brand-name">eduardo-torres<span class="dim">.dev</span></div>
     </a>
+    <!-- Desktop nav links; hidden below 900px viewport width -->
     <div class="nav-links" id="navLinks">
       <a href="#summary" data-hover data-sec="summary"><span class="nv-num">01</span> Summary</a>
       <a href="#skills" data-hover data-sec="skills"><span class="nv-num">02</span> Skills</a>
@@ -1032,6 +1169,7 @@
         <span id="themeLabel">LIGHT</span>
       </button>
       <a href="#contact" class="cta-top" data-hover>Hire me <span class="arr">→</span></a>
+      <!-- Hamburger button: visible only on mobile; JS toggles .open to animate to X -->
       <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">
         <span class="bar"></span>
         <span class="bar"></span>
@@ -1041,6 +1179,8 @@
   </div>
 </nav>
 
+<!-- ===== MOBILE NAVIGATION PANEL ===== -->
+<!-- Slides in below the topbar on mobile; each link click calls closeMenu() -->
 <div class="mobile-nav" id="mobileNav" aria-hidden="true">
   <a href="#summary" data-sec="summary"><span class="mn-num">01</span> Summary</a>
   <a href="#skills" data-sec="skills"><span class="mn-num">02</span> Skills</a>
@@ -1052,7 +1192,8 @@
 
 <main class="shell" id="top">
 
-  <!-- HERO -->
+  <!-- ===== HERO SECTION ===== -->
+  <!-- Full-viewport intro: availability status, large name, role blurb, CTA row, quick-facts -->
   <header class="hero">
     <div class="hero-meta rv">
       <div>
@@ -1065,6 +1206,7 @@
 
     <div class="hero-grid">
       <div>
+        <!-- Large display name; .amp styles the trailing period in accent color -->
         <h1 class="hero-name rv">
           Eduardo<br/>
           Torres<span class="amp">.</span>
@@ -1072,6 +1214,7 @@
         <p class="hero-role rv">
           Software developer focused on <span class="hl">iOS and web apps</span>, from idea to deployment. Building with Swift, TypeScript, and AI across mobile and full-stack.
         </p>
+        <!-- CTA row: primary "Get in touch" button + secondary text links -->
         <div class="ctas rv">
           <a href="#contact" class="cta-link primary" data-hover>Get in touch <span>→</span></a>
           <a href="Eduardo_Torres_Resume.pdf" download class="cta-link" data-hover>Download CV <span>↓</span></a>
@@ -1081,6 +1224,7 @@
         </div>
       </div>
 
+      <!-- Quick facts sidebar: role, location, stack, languages, availability -->
       <aside class="facts rv" aria-label="Quick facts">
         <div class="fact">
           <span class="fact-k">Role</span>
@@ -1088,7 +1232,7 @@
         </div>
         <div class="fact">
           <span class="fact-k">Based</span>
-          <span class="fact-v">San Juan, Puerto Rico · UTC−4</span>
+          <span class="fact-v">San Juan, Puerto Rico · UTC-4</span>
         </div>
         <div class="fact">
           <span class="fact-k">Stack</span>
@@ -1106,16 +1250,19 @@
     </div>
   </header>
 
-  <!-- 01 SUMMARY -->
+  <!-- ===== 01 SUMMARY ===== -->
+  <!-- Portrait photo + lede paragraph + motto + stats grid + tag clouds -->
   <section class="section" id="summary" data-screen-label="01 Summary">
     <div class="sec-head rv">
       <div class="sec-num">§ 01 / 06</div>
       <h2 class="sec-title">Summary<span class="k">// about</span></h2>
     </div>
     <div class="summary-wrap rv">
+      <!-- Empty div preserves the 120px offset column alignment -->
       <div></div>
       <div>
         <div class="summary-inner">
+          <!-- Portrait: 4:5 photo with decorative inset border and caption overlay -->
           <figure class="portrait" aria-label="Photo placeholder">
             <span class="portrait-label">photo · 4:5</span>
             <figcaption class="portrait-caption">
@@ -1124,6 +1271,7 @@
             </figcaption>
           </figure>
           <div class="summary-body">
+            <!-- lede: large opening statement with accent and warm-underline highlights -->
             <p class="lede">
               I build <span class="hl-b">iOS and web apps</span> that ship, and I care about the ones that <span class="hl-w">actually solve real problems</span>.
             </p>
@@ -1131,14 +1279,17 @@
               Bilingual software developer (EN/ES), CS background, eight years of writing code. Professionally supporting a production payments platform while shipping iOS and web apps on the side. Happiest when building things that handle real users: a WhatsApp booking bot for a barbershop, an AI property matcher for realtors, or a payments app for iOS. Currently going deep on <strong style="color:var(--fg)">AI-native development</strong> with Swift, TypeScript, and the Anthropic API.
             </p>
 
+            <!-- Motto blockquote: left-bordered pull-quote with decorative opening mark -->
             <div class="motto">
               <span class="quot">&ldquo;</span>
               <div>
                 <strong>Don't feed mediocrity.</strong>
-                <span class="attr">— personal motto</span>
+                <!-- Hyphen used intentionally: no em dashes in this file -->
+                <span class="attr">- personal motto</span>
               </div>
             </div>
 
+            <!-- Stats grid: four numeric highlights in a 4-column (2x2 on mobile) layout -->
             <div class="stats">
               <div class="stat">
                 <div class="stat-n">8<span class="sm">yrs</span></div>
@@ -1158,6 +1309,7 @@
               </div>
             </div>
 
+            <!-- Go-to tech tags: .b class applies accent-color bullet dots -->
             <div class="loves">
               <span class="loves-k">Go-to tech</span>
               <div class="loves-items">
@@ -1170,6 +1322,7 @@
               </div>
             </div>
 
+            <!-- Currently loving: warm-color bullet dots (no .b class) -->
             <div class="loves">
               <span class="loves-k">Currently loving</span>
               <div class="loves-items">
@@ -1185,7 +1338,8 @@
     </div>
   </section>
 
-  <!-- 02 SKILLS -->
+  <!-- ===== 02 SKILLS ===== -->
+  <!-- Six skill groups: Languages, Frameworks & AI, Tools, Infra, Platforms, Core CS -->
   <section class="section" id="skills" data-screen-label="02 Skills">
     <div class="sec-head rv">
       <div class="sec-num">§ 02 / 06</div>
@@ -1273,7 +1427,8 @@
     </div>
   </section>
 
-  <!-- 03 EXPERIENCE -->
+  <!-- ===== 03 EXPERIENCE ===== -->
+  <!-- Timeline of professional roles; nodes animate on hover via CSS -->
   <section class="section" id="experience" data-screen-label="03 Experience">
     <div class="sec-head rv">
       <div class="sec-num" style="letter-spacing: 0.24px">§ 03 / 06</div>
@@ -1282,23 +1437,25 @@
     <div class="exp-grid rv">
       <div></div>
       <div class="timeline">
+        <!-- Current role: .chip badge signals still active -->
         <article class="job">
-          <div class="job-date">May 2023 — Present <span class="chip">Current</span></div>
+          <!-- Hyphen used for date range: no em dashes in this file -->
+          <div class="job-date">May 2023 - Present <span class="chip">Current</span></div>
           <h3 class="job-title">Digital Payments Support Specialist</h3>
           <div class="job-company">Accepta Payments <span class="arr">→</span> San Juan, PR</div>
           <ul>
             <li>Provide high-level technical support for a complex payment platform, focused on backend stability and uptime.</li>
             <li>Run SQL analysis to surface performance bottlenecks and feed improvement tickets back to engineering.</li>
-            <li>Key stakeholder in Change Management — review updates, coordinate deploys, minimize user impact.</li>
+            <li>Key stakeholder in Change Management: review updates, coordinate deploys, minimize user impact.</li>
             <li>Monitor infrastructure health and partner with developers to debug and resolve production issues.</li>
           </ul>
         </article>
         <article class="job">
-          <div class="job-date">Oct 2021 — May 2023</div>
+          <div class="job-date">Oct 2021 - May 2023</div>
           <h3 class="job-title">IT Assistant</h3>
           <div class="job-company">All Ways 99 <span class="arr">→</span> Caguas, PR</div>
           <ul>
-            <li>Configured POS hardware and software for 98 retail locations — imaging, networking, access points.</li>
+            <li>Configured POS hardware and software for 98 retail locations - imaging, networking, access points.</li>
             <li>Automated repetitive setup routines, significantly reducing onboarding time for new hardware.</li>
             <li>Provided remote and on-site technical assistance across warehouse and office operations.</li>
           </ul>
@@ -1307,31 +1464,36 @@
     </div>
   </section>
 
-  <!-- 04 PROJECTS -->
+  <!-- ===== 04 PROJECTS ===== -->
+  <!-- 7 selected projects; each row links to GitHub repo -->
   <section class="section" id="projects" data-screen-label="04 Projects">
     <div class="sec-head rv">
       <div class="sec-num">§ 04 / 06</div>
       <h2 class="sec-title">Projects<span class="k">// selected work</span></h2>
     </div>
     <div class="proj-list rv" id="projList">
+      <!-- P/01: Thread Vault - iOS on-device AI content vault -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/thread-vault" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/01</div>
         <div>
           <div class="proj-name">Thread Vault<span class="proj-hint">iOS · on-device AI</span></div>
         </div>
-        <div class="proj-blurb">iOS AI content vault — save anything via the Share Sheet. Gemma 4 runs on-device classification; Gemini and OpenAI available as cloud backends.</div>
+        <!-- Colon used in place of em dash per style rules -->
+        <div class="proj-blurb">iOS AI content vault: save anything via the Share Sheet. Gemma 4 runs on-device classification; Gemini and OpenAI available as cloud backends.</div>
         <div class="proj-stack"><span>Swift 6</span><span>SwiftUI</span><span>SwiftData</span><span>MediaPipe</span></div>
         <div class="proj-arrow">↗</div>
       </a>
+      <!-- P/02: agenda-os - WhatsApp-first barbershop SaaS -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/agenda-os" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/02</div>
         <div>
           <div class="proj-name">agenda-os<span class="proj-hint">SaaS · WhatsApp-first booking</span></div>
         </div>
-        <div class="proj-blurb">Multi-tenant barbershop SaaS. WhatsApp-first booking — no app download required. Handles appointments, reminders, and multi-location management.</div>
+        <div class="proj-blurb">Multi-tenant barbershop SaaS. WhatsApp-first booking with no app download required. Handles appointments, reminders, and multi-location management.</div>
         <div class="proj-stack"><span>Next.js 16</span><span>Supabase</span><span>WhatsApp API</span><span>Resend</span></div>
         <div class="proj-arrow">↗</div>
       </a>
+      <!-- P/03: Really CRM - AI-powered real estate CRM -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/Really-CRM" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/03</div>
         <div>
@@ -1341,6 +1503,7 @@
         <div class="proj-stack"><span>Next.js 16</span><span>Supabase</span><span>Anthropic API</span></div>
         <div class="proj-arrow">↗</div>
       </a>
+      <!-- P/04: Task-Flow - iOS task manager with natural language input -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/Task-Flow" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/04</div>
         <div>
@@ -1350,15 +1513,17 @@
         <div class="proj-stack"><span>Swift 6</span><span>SwiftUI</span><span>SwiftData</span><span>EventKit</span></div>
         <div class="proj-arrow">↗</div>
       </a>
+      <!-- P/05: PocketPay - iOS P2P payments app -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/PocketPay" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/05</div>
         <div>
           <div class="proj-name">PocketPay<span class="proj-hint">iOS · P2P payments</span></div>
         </div>
-        <div class="proj-blurb">iOS P2P payments app with biometric auth, a custom numeric keypad, Stripe integration, and a mock mode for development. ATH Móvil-inspired.</div>
+        <div class="proj-blurb">iOS P2P payments app with biometric auth, a custom numeric keypad, Stripe integration, and a mock mode for development. ATH Movil-inspired.</div>
         <div class="proj-stack"><span>SwiftUI</span><span>MVVM</span><span>Stripe</span><span>iOS 17+</span></div>
         <div class="proj-arrow">↗</div>
       </a>
+      <!-- P/06: Roamly - travel planning app with interactive map -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/Roamly" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/06</div>
         <div>
@@ -1368,12 +1533,13 @@
         <div class="proj-stack"><span>React 19</span><span>Vite</span><span>Tailwind CSS</span><span>React Leaflet</span></div>
         <div class="proj-arrow">↗</div>
       </a>
+      <!-- P/07: Turn Management System - queue management with dual UI (Flask + Tkinter) -->
       <a class="proj" href="https://github.com/EduardoTorresAlamo/Turn-Management-System" target="_blank" rel="noopener" data-hover>
         <div class="proj-num">P/07</div>
         <div>
           <div class="proj-name">Turn Management System<span class="proj-hint">Queue mgmt · dual UI</span></div>
         </div>
-        <div class="proj-blurb">Queue management with numbered tickets for walk-in and appointment users. Two Python front-ends — Flask web app and Tkinter desktop GUI.</div>
+        <div class="proj-blurb">Queue management with numbered tickets for walk-in and appointment users. Two Python front-ends: Flask web app and Tkinter desktop GUI.</div>
         <div class="proj-stack"><span>Python</span><span>Flask</span><span>Tkinter</span></div>
         <div class="proj-arrow">↗</div>
       </a>
@@ -1384,7 +1550,8 @@
     </div>
   </section>
 
-  <!-- 05 EDUCATION & LANGUAGES -->
+  <!-- ===== 05 EDUCATION & LANGUAGES ===== -->
+  <!-- Degree history on left column; language proficiency bars on right column -->
   <section class="section" id="education" data-screen-label="05 Education">
     <div class="sec-head rv">
       <div class="sec-num">§ 05 / 06</div>
@@ -1393,18 +1560,20 @@
     <div class="split-grid rv">
       <div></div>
       <div>
+        <!-- Hyphen used for date ranges: no em dashes in this file -->
         <div class="edu-item">
-          <div class="dates">2016 — May 2026 <span class="chip">Expected</span></div>
+          <div class="dates">2016 - May 2026 <span class="chip">Expected</span></div>
           <h3>B.S. Computer Science</h3>
-          <p>Universidad de Puerto Rico · Bayamón, PR</p>
+          <p>Universidad de Puerto Rico · Bayamon, PR</p>
         </div>
         <div class="edu-item">
-          <div class="dates">2013 — 2015</div>
+          <div class="dates">2013 - 2015</div>
           <h3>High School Diploma</h3>
           <p>Esc. Voc. Antonio Fernos Isern · San Lorenzo, PR</p>
         </div>
       </div>
       <div>
+        <!-- Language proficiency bars: --w CSS variable drives ::after width -->
         <div style="font-family:var(--mono); font-size:11px; color:var(--fg-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px;">Languages</div>
         <div class="lang-row">
           <span class="lang-name">Spanish</span>
@@ -1419,17 +1588,20 @@
       </div>
     </div>
 
-    <!-- Currently block -->
+    <!-- ===== CURRENTLY BLOCK ===== -->
+    <!-- Callout for active learning focus and personal interests -->
     <div class="currently rv">
       <div class="kicker"><span class="dot"></span>Currently</div>
       <div>
-        <p>Deep-diving into <strong style="color:var(--fg)">security in programming with AI</strong> — how systems get attacked, how models change the threat surface, and how to build with that in mind from day one.</p>
+        <!-- Colon used in place of em dash per style rules -->
+        <p>Deep-diving into <strong style="color:var(--fg)">security in programming with AI</strong>: how systems get attacked, how models change the threat surface, and how to build with that in mind from day one.</p>
         <p>Off the clock: I got into CS through a lifelong love of video games. Still the fastest way to explain why systems design fascinates me.</p>
       </div>
     </div>
   </section>
 
-  <!-- 06 CONTACT -->
+  <!-- ===== 06 CONTACT ===== -->
+  <!-- Contact info column + Formspree-powered contact form -->
   <section class="section" id="contact" data-screen-label="06 Contact">
     <div class="sec-head rv">
       <div class="sec-num">§ 06 / 06</div>
@@ -1442,14 +1614,17 @@
           Have a role, a question, or a project?<br/>
           <span class="accent">Let's talk.</span>
         </div>
+        <!-- Key/value rows for direct contact channels -->
         <div class="contact-methods">
           <div class="cm-row"><span class="cm-k">Email</span><a href="mailto:torreseduardo804@gmail.com" data-hover>torreseduardo804@gmail.com</a></div>
           <div class="cm-row"><span class="cm-k">Phone</span><a href="tel:+19392670235" data-hover>+1 (939) 267-0235</a></div>
           <div class="cm-row"><span class="cm-k">GitHub</span><a href="https://github.com/EduardoTorresAlamo" target="_blank" rel="noopener" data-hover>@EduardoTorresAlamo</a></div>
           <div class="cm-row"><span class="cm-k">LinkedIn</span><a href="https://www.linkedin.com/in/eduardo-torres-787087221" target="_blank" rel="noopener" data-hover>eduardo-torres-pr</a></div>
-          <div class="cm-row"><span class="cm-k">Local</span><span>San Juan, PR · <span id="localTime">—</span></span></div>
+          <!-- localTime span updated every 30s by tick() -->
+          <div class="cm-row"><span class="cm-k">Local</span><span>San Juan, PR · <span id="localTime">-</span></span></div>
         </div>
       </div>
+      <!-- Contact form: POSTs to Formspree; JS handles validation and status display -->
       <form class="form" id="contactForm" novalidate>
         <div class="field" id="f-name">
           <label for="in-name"><span>Name <span class="req">*</span></span><span class="err-msg"></span></label>
@@ -1466,28 +1641,32 @@
         <div class="field" id="f-msg">
           <label for="in-msg"><span>Message <span class="req">*</span></span><span class="err-msg"></span></label>
           <textarea id="in-msg" name="message" rows="4" data-hover maxlength="600"></textarea>
+          <!-- charCount span updated on input event -->
           <span class="char"><span id="charCount">0</span>/600</span>
         </div>
         <button type="submit" class="btn-submit" data-hover>
           Send message <span>→</span>
         </button>
+        <!-- formStatus div shown after submit with success or error message -->
         <div class="form-status" id="formStatus" style="display:none"></div>
       </form>
     </div>
   </section>
 </main>
 
-<!-- FOOTER -->
+<!-- ===== FOOTER ===== -->
+<!-- Three columns: brand tagline, copyright, social links -->
 <footer class="footer">
   <div class="shell">
     <div class="foot-grid rv">
       <div>
         <div class="foot-mono" style="margin-bottom:16px;">/ end of transmission</div>
+        <!-- Large display text mirrors hero name scale for visual symmetry -->
         <div class="foot-big">Let's<br/>build<span class="amp">.</span></div>
       </div>
       <div class="foot-mono">
         © 2026 Eduardo Torres<br/>
-        Built with HTML, CSS & JS<br/>
+        Built with HTML, CSS &amp; JS<br/>
         San Juan, Puerto Rico
       </div>
       <div style="display:flex; flex-direction:column; gap:12px; align-items:flex-start;">
@@ -1502,11 +1681,14 @@
   </div>
 </footer>
 
-<!-- Tweak panel -->
+<!-- ===== TWEAK PANEL ===== -->
+<!-- Fixed bottom-right panel: accent color swatches, cursor toggle, density toggle.
+     Toggle via keyboard shortcut T; D shortcut toggles dark/light theme. -->
 <div class="tweaks-panel" id="tweaks">
   <h4>Tweaks <button class="tw-toggle" id="tweaksClose" style="text-transform:none">close</button></h4>
   <div class="tweak-row">
     <label>Accent</label>
+    <!-- Click bubbles up to #tweakAccent handler which reads data-accent attribute -->
     <div class="tweak-swatches" id="tweakAccent">
       <div class="tw-sw" data-accent="blue"    style="background:oklch(0.58 0.22 255)"></div>
       <div class="tw-sw" data-accent="emerald" style="background:oklch(0.62 0.18 160)"></div>
@@ -1529,7 +1711,9 @@
 </div>
 
 <script>
-/* ========= TWEAKABLE DEFAULTS ========= */
+/* ========= TWEAKABLE DEFAULTS =========
+   Central config object. All JS features read from TWEAKS so defaults
+   are easy to change in one place without hunting through the code.    */
 const TWEAKS = {
   "theme": "dark",
   "accent": "blue",
@@ -1537,6 +1721,9 @@ const TWEAKS = {
   "density": "comfy"
 };
 
+/* ACCENTS map: each key holds separate light/dark OKLCH values.
+   Dark variants use higher lightness and slightly lower chroma to
+   avoid glare against the dark background.                        */
 const ACCENTS = {
   blue:    { light: "oklch(0.58 0.22 255)", dark: "oklch(0.72 0.18 245)" },
   emerald: { light: "oklch(0.52 0.16 160)", dark: "oklch(0.72 0.15 160)" },
@@ -1545,15 +1732,28 @@ const ACCENTS = {
   red:     { light: "oklch(0.58 0.22 25)",  dark: "oklch(0.72 0.18 25)"  },
 };
 
-/* ========= Custom Cursor ========= */
+/* ========= Custom Cursor =========
+   Two-element cursor: cDot tracks the mouse exactly on each mousemove event.
+   cRing lerps toward cDot position on every requestAnimationFrame tick,
+   producing a smooth drag-behind effect without CSS transitions.            */
 const cDot = document.getElementById('cursorDot');
 const cRing = document.getElementById('cursorRing');
+/* Initialize ring position to viewport center so it doesn't animate from (0,0) */
 let mx = window.innerWidth/2, my = window.innerHeight/2;
 let rx = mx, ry = my;
 window.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
+  /* Move dot immediately to mouse position for precise tracking */
   cDot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
 });
+
+/**
+ * Animate the cursor ring via requestAnimationFrame.
+ * On each frame the ring position lerps 18% of the way toward the dot,
+ * producing a smooth follow effect without using CSS transitions.
+ * The 0.18 lerp factor was chosen empirically: fast enough to feel responsive,
+ * slow enough to create visible lag that signals interactivity.
+ */
 function loop() {
   rx += (mx - rx) * 0.18;
   ry += (my - ry) * 0.18;
@@ -1561,36 +1761,59 @@ function loop() {
   requestAnimationFrame(loop);
 }
 loop();
+/* Hide cursors when pointer leaves the window to avoid a stuck dot at the edge */
 document.addEventListener('mouseleave', () => { cDot.style.opacity = 0; cRing.style.opacity = 0; });
 document.addEventListener('mouseenter', () => { cDot.style.opacity = 1; cRing.style.opacity = 1; });
+/* Expand ring on hover over interactive elements (data-hover attribute) */
 document.querySelectorAll('[data-hover]').forEach(el => {
   el.addEventListener('mouseenter', () => cRing.classList.add('hover'));
   el.addEventListener('mouseleave', () => cRing.classList.remove('hover'));
 });
 
-/* ========= Theme ========= */
+/* ========= Theme =========
+   Theme and accent are applied together: accent has separate light/dark OKLCH
+   values, so changing the theme must also re-derive the accent color.
+   Both choices are persisted to localStorage under 'et-theme' and 'et-accent'. */
+
+/**
+ * Apply a light or dark theme and persist the choice to localStorage.
+ * Also re-applies the current accent so its OKLCH value stays correct
+ * for the new theme brightness.
+ * @param {string} t - 'light' or 'dark'
+ */
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
   document.getElementById('themeLabel').textContent = t.toUpperCase();
+  /* Re-derive accent after theme change: OKLCH values differ per theme */
   applyAccent(TWEAKS.accent);
   TWEAKS.theme = t;
   try { localStorage.setItem('et-theme', t); } catch(e){}
 }
+
+/**
+ * Apply an accent color by writing the appropriate OKLCH value to --accent.
+ * Also derives --accent-soft by inserting an alpha channel into the OKLCH string.
+ * Updates swatch .active state and persists to localStorage.
+ * @param {string} k - Accent key: 'blue' | 'emerald' | 'orange' | 'violet' | 'red'
+ */
 function applyAccent(k) {
   const t = document.documentElement.getAttribute('data-theme');
   const c = ACCENTS[k][t];
   document.documentElement.style.setProperty('--accent', c);
+  /* Derive --accent-soft by replacing the closing ')' with an alpha channel.
+     Input: "oklch(0.58 0.22 255)"  ->  "oklch(0.58 0.22 255 / 0.12)"       */
   document.documentElement.style.setProperty('--accent-soft', c.replace(')', ' / 0.12)'));
   document.querySelectorAll('.tw-sw').forEach(s => s.classList.toggle('active', s.dataset.accent === k));
   TWEAKS.accent = k;
   try { localStorage.setItem('et-accent', k); } catch(e){}
 }
+
 document.getElementById('themeToggle').addEventListener('click', () => {
   const cur = document.documentElement.getAttribute('data-theme');
   applyTheme(cur === 'light' ? 'dark' : 'light');
 });
 
-/* Init from storage or defaults */
+/* Init theme and accent from localStorage, falling back to TWEAKS defaults */
 try {
   const savedTheme = localStorage.getItem('et-theme');
   const savedAccent = localStorage.getItem('et-accent');
@@ -1601,13 +1824,21 @@ try {
   applyAccent(TWEAKS.accent);
 }
 
-/* ========= Reveal on scroll ========= */
+/* ========= Reveal on scroll =========
+   Each element with class .rv starts at opacity:0 and translateY(18px).
+   IntersectionObserver fires when >12% of the element is visible; adds .in
+   to trigger the CSS transition, then stops observing to avoid repeat fires.
+   rootMargin -40px bottom trims so elements near the fold don't trigger early. */
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-/* ========= Active section nav ========= */
+/* ========= Active section nav =========
+   A second IntersectionObserver tracks which section is in the middle of the viewport.
+   rootMargin: '-40% top, -55% bottom' means the observer fires when a section
+   occupies the vertical band between 40% and 45% from the top - roughly center screen.
+   Both desktop and mobile nav links are updated simultaneously.                         */
 const sections = document.querySelectorAll('section.section');
 const navLinks = document.querySelectorAll('#navLinks a');
 const mobileNavLinks = document.querySelectorAll('#mobileNav a');
@@ -1622,10 +1853,16 @@ const scrollIO = new IntersectionObserver((entries) => {
 }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
 sections.forEach(s => scrollIO.observe(s));
 
-/* ========= Hamburger menu ========= */
+/* ========= Hamburger Menu =========
+   menuBtn toggles .open on itself (CSS X animation) and on mobileNav (.open shows panel).
+   aria-expanded and aria-hidden are kept in sync for screen reader accessibility. */
 const menuBtn = document.getElementById('menuBtn');
 const mobileNav = document.getElementById('mobileNav');
 
+/**
+ * Close the mobile nav panel and reset aria attributes.
+ * Called on nav link clicks, Escape key, and the menu button when open.
+ */
 function closeMenu() {
   menuBtn.classList.remove('open');
   menuBtn.setAttribute('aria-expanded', 'false');
@@ -1645,23 +1882,42 @@ menuBtn.addEventListener('click', () => {
   }
 });
 
+/* Close menu when any mobile nav link is clicked (page will scroll to target) */
 mobileNavLinks.forEach(a => a.addEventListener('click', closeMenu));
 
+/* Escape key closes the menu for keyboard navigation accessibility */
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
-/* ========= Scroll progress ========= */
-const progress = document.getElementById('progress');
+/* ========= Scroll Progress Bar =========
+   Reads scrollTop and scrollHeight from the document element on each scroll event.
+   Guard against total === 0 prevents division by zero on very short pages.
+   passive:true allows the browser to skip calling preventDefault, improving scroll perf. */
+
+/**
+ * Update the --p CSS variable on the progress bar element.
+ * Percentage = scrolled / (total scrollable height) * 100.
+ */
 function updateProgress() {
   const h = document.documentElement;
   const scrolled = h.scrollTop;
   const total = h.scrollHeight - h.clientHeight;
+  /* Guard against division by zero on pages shorter than the viewport */
   const p = total > 0 ? (scrolled / total) * 100 : 0;
   progress.style.setProperty('--p', p + '%');
 }
 window.addEventListener('scroll', updateProgress, { passive: true });
-updateProgress();
+updateProgress(); /* Set initial value in case page loads mid-scroll */
 
-/* ========= Local time ========= */
+/* ========= Local Time Display =========
+   Displays current time in Puerto Rico (AST, UTC-4, no DST).
+   America/Puerto_Rico is used instead of a fixed offset so the IANA
+   database handles any edge-case time adjustments automatically.
+   Updated every 30s instead of every second to avoid unnecessary DOM writes. */
+
+/**
+ * Update the local time display in the contact section.
+ * Uses the America/Puerto_Rico IANA timezone (AST, UTC-4).
+ */
 function tick() {
   const el = document.getElementById('localTime');
   if (!el) return;
@@ -1669,24 +1925,47 @@ function tick() {
   const opts = { timeZone: 'America/Puerto_Rico', hour: '2-digit', minute: '2-digit', hour12: false };
   el.textContent = d.toLocaleTimeString('en-US', opts) + ' AST';
 }
-tick(); setInterval(tick, 30000);
+tick();
+/* 30s interval is frequent enough to feel live without per-second DOM churn */
+setInterval(tick, 30000);
 
-/* ========= Contact form ========= */
+/* ========= Contact Form =========
+   Client-side validation runs before POSTing to Formspree.
+   setErr() / validEmail() keep validation logic isolated and reusable.
+   The fetch POST uses JSON body (Formspree accepts both JSON and multipart). */
 const form = document.getElementById('contactForm');
 const charCountEl = document.getElementById('charCount');
 const msgEl = document.getElementById('in-msg');
+/* Update character counter on every keystroke */
 msgEl.addEventListener('input', () => charCountEl.textContent = msgEl.value.length);
 
+/**
+ * Set or clear the error state on a form field.
+ * Adds .error class and sets .err-msg text when msg is non-empty;
+ * removes the class and clears text when msg is empty string.
+ * @param {string} id  - The id of the wrapping .field element
+ * @param {string} msg - Error text to display, or empty string to clear
+ */
 function setErr(id, msg) {
   const f = document.getElementById(id);
   f.classList.toggle('error', !!msg);
   f.querySelector('.err-msg').textContent = msg || '';
 }
+
+/**
+ * Basic email format check using a simple regex.
+ * Validates that the string has: non-whitespace chars @ non-whitespace chars . non-whitespace chars.
+ * Not RFC 5321 compliant by design; rejects obvious typos without over-blocking valid addresses.
+ * @param {string} s - The email string to test
+ * @returns {boolean} True if the string looks like a valid email address
+ */
 function validEmail(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(form));
+
+  /* Validate all required fields before attempting the network request */
   let ok = true;
   setErr('f-name', !data.name.trim() ? 'required' : '');
   setErr('f-email', !data.email.trim() ? 'required' : (!validEmail(data.email) ? 'invalid email' : ''));
@@ -1700,6 +1979,7 @@ form.addEventListener('submit', async (e) => {
   btn.innerHTML = 'Sending... <span class="mono">[...]</span>';
 
   try {
+    /* POST to Formspree endpoint; Accept: application/json triggers JSON response body */
     const res = await fetch('https://formspree.io/f/xojbwgzz', {
       method: 'POST',
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
@@ -1712,12 +1992,14 @@ form.addEventListener('submit', async (e) => {
     });
 
     if (res.ok) {
-      btn.innerHTML = 'Sent <span>✓</span>';
+      btn.innerHTML = 'Sent <span>&#x2713;</span>';
       status.className = 'form-status ok';
+      /* Use only the first name token to keep the success message concise */
       status.innerHTML = `<span class="stt-dot"></span>Thanks, ${data.name.split(' ')[0]}. I'll get back to you at ${data.email}.`;
       status.style.display = 'flex';
       form.reset();
       charCountEl.textContent = '0';
+      /* Re-enable submit after 2.4s to allow re-submission if needed */
       setTimeout(() => {
         btn.disabled = false;
         btn.innerHTML = 'Send message <span>→</span>';
@@ -1727,6 +2009,7 @@ form.addEventListener('submit', async (e) => {
       throw new Error(json.error || 'Send failed');
     }
   } catch (err) {
+    /* On any network or Formspree error, restore the button and show fallback contact */
     btn.disabled = false;
     btn.innerHTML = 'Send message <span>→</span>';
     status.className = 'form-status';
@@ -1737,17 +2020,19 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
-/* ========= Tweak panel ========= */
+/* ========= Tweak Panel ========= */
 const tweakPanel = document.getElementById('tweaks');
 
 document.getElementById('tweaksClose').addEventListener('click', () => tweakPanel.classList.remove('on'));
 
+/* Event delegation on the swatch container: single listener handles all color swatches */
 document.getElementById('tweakAccent').addEventListener('click', (e) => {
   const sw = e.target.closest('[data-accent]');
   if (!sw) return;
   applyAccent(sw.dataset.accent);
 });
 
+/* Cursor toggle: switches between custom cursor and OS default cursor */
 const twCursor = document.getElementById('twCursor');
 twCursor.textContent = TWEAKS.cursor ? 'on' : 'off';
 twCursor.addEventListener('click', () => {
@@ -1756,11 +2041,13 @@ twCursor.addEventListener('click', () => {
   document.body.style.cursor = TWEAKS.cursor ? 'none' : 'auto';
   cDot.style.display = TWEAKS.cursor ? 'block' : 'none';
   cRing.style.display = TWEAKS.cursor ? 'block' : 'none';
+  /* Restore native cursors on all interactive elements when custom cursor is off */
   document.querySelectorAll('a, button, input, textarea, label').forEach(el => {
     el.style.cursor = TWEAKS.cursor ? 'none' : '';
   });
 });
 
+/* Density toggle: comfy (default 96px section padding) vs dense (64px) */
 const twDensity = document.getElementById('twDensity');
 twDensity.textContent = TWEAKS.density;
 twDensity.addEventListener('click', () => {
@@ -1770,7 +2057,11 @@ twDensity.addEventListener('click', () => {
   document.querySelectorAll('.section').forEach(s => s.style.paddingBlock = TWEAKS.density === 'dense' ? '64px' : '96px');
 });
 
-/* Keyboard shortcuts */
+/* ========= Keyboard Shortcuts =========
+   T: toggle tweak panel visibility
+   D: toggle dark/light theme
+   Both shortcuts are suppressed when focus is inside a form field
+   to avoid interfering with typing.                                */
 window.addEventListener('keydown', (e) => {
   if (e.target.matches('input, textarea')) return;
   if (e.key === 't' || e.key === 'T') tweakPanel.classList.toggle('on');
