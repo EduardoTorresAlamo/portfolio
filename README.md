@@ -22,7 +22,7 @@ Pure HTML, CSS, and JavaScript — no frameworks, no bundler, no npm.
 | 01 | Summary | Bio, stats, go-to tech |
 | 02 | Skills | Languages, frameworks, tools, infra |
 | 03 | Experience | Work history |
-| 04 | Projects | 5 selected GitHub projects |
+| 04 | Projects | 8 selected projects (GitHub repos and live sites) |
 | 05 | Education | B.S. CS — UPR Bayamón |
 | 06 | Contact | Email form and social links |
 
