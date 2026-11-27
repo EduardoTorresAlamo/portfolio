@@ -1,1 +1,12 @@
 .claude/
+
+# Local working files (not part of the project)
+CLAUDE.md
+AGENTS.md
+WARP.md
+REVIEW_FINDINGS.md
+landing-plan.md
+.claude/
+.claude-flow/
+.codegraph/
+.audit/
